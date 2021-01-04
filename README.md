@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Webpack Starter Kit
 
 ## Clone This Repo
@@ -103,3 +104,7 @@ _If you are finished with the functionality and testing of your project_, then y
 [GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
 
 If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
+=======
+# whats-cooking-refactor
+Refactor Tractor for Mod 2
+>>>>>>> d2a980a2eb4ab7e9826e323e604821530582fbeb
