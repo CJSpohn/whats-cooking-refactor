@@ -43,11 +43,17 @@ describe('User', () => {
     expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
   });
 
-  it('Should be able to search favoriteRecipes by name or ingredient', () => {
+  it('Should be able to search favoriteRecipes by ingredient', () => {
     user1.addToFavorites(recipeData[0]);
     user1.addToFavorites(recipeData[1]);
     expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
   });
+
+  // it('Should be able to search favoriteRecipes by name', () => {
+  //   user1.addToFavorites(recipeData[0]);
+  //   user1.addToFavorites(recipeData[1]);
+  //   expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
+  // });
 
   it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
     expect(user1.checkPantry(recipeIngredients)).to.eql('You have the ingredients!');
