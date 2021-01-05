@@ -15,6 +15,7 @@ class Recipe {
         if (specificIngredient.id === ingredient.id) {
           costCounter += (Number(specificIngredient.estimatedCostInCents) *
           Number(ingredient.quantity.amount))
+          // investigate Number() further
         }
       })
     });
