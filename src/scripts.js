@@ -14,7 +14,7 @@ let favButton = document.querySelector('.view-favorites');
 let homeButton = document.querySelector('.home')
 let cardArea = document.querySelector('.all-cards');
 // let cookbook = new Cookbook(recipeData);
-let user, pantry;
+let user, pantry, cookbook;
 
 
 
@@ -35,9 +35,12 @@ const onStartup = () => {
       //fetch recipes
       fetch('http://localhost:3001/api/v1/recipes')
         .then(res => res.json())
-        .then(recipes => console.log(recipes))
-      // populateCards(cookbook.recipes);
-      // greetUser();
+        .then(recipes => {
+          cookbook = new Cookbook(recipes);
+          populateCards(cookbook.recipes);
+        })
+
+      greetUser();
     })
     .catch(err => console.log('here\'s your error', err))
 
