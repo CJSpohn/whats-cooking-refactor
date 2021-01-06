@@ -1,6 +1,8 @@
 import './css/base.scss';
 import './css/styles.scss';
 
+import domUpdates from './domUpdates';
+
 import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
@@ -42,6 +44,8 @@ const getData = () => {
 
 const onStartup = () => {
   getData();
+  console.log(domUpdates.updateDomMethod1());
+  domUpdates.updateDomMethod1();
 }
 
 const viewFavorites = () => {
