@@ -14,35 +14,49 @@ let favButton = document.querySelector('.view-favorites');
 let homeButton = document.querySelector('.home')
 let cardArea = document.querySelector('.all-cards');
 // let cookbook = new Cookbook(recipeData);
-let user, pantry, cookbook;
+let user, pantry, cookbook, ingredients;
 
 
 
 const onStartup = () => {
-  //fetch users
-  //fetch recipes
 
-  fetch('http://localhost:3001/api/v1/users')
-    .then(res => res.json())
-    .then(users => {
-      let userId = (Math.floor(Math.random() * 49) + 1);
-      let newUser = users.find(user => {
-        return user.id === Number(userId);
-      });
-      user = new User(userId, newUser.name, newUser.pantry);
-      pantry = new Pantry(newUser.pantry);
+  let usersPromise = fetch('http://localhost:3001/api/v1/users')
+    .then(res => res.json());
+  let recipesPromise = fetch('http://localhost:3001/api/v1/recipes')
+    .then(res => res.json());
+  let ingredientsPromise = fetch('http://localhost:3001/api/v1/ingredients')
+    .then(res => res.json());
 
-      //fetch recipes
-      fetch('http://localhost:3001/api/v1/recipes')
-        .then(res => res.json())
-        .then(recipes => {
-          cookbook = new Cookbook(recipes);
-          populateCards(cookbook.recipes);
-        })
+  Promise.all([usersPromise, recipesPromise, ingredientsPromise])
+    // .then(dataset => dataset.json())
+    .then(dataset => {
+      users = dataset[0];
+      let recipes = dataset[1];
+      ingredients = dataset[2];
+      console.log(users, recipes, ingredients)
+    });
 
-      greetUser();
-    })
-    .catch(err => console.log('here\'s your error', err))
+  // fetch('http://localhost:3001/api/v1/users')
+  //   .then(res => res.json())
+  //   .then(users => {
+  //     let userId = (Math.floor(Math.random() * 49) + 1);
+  //     let newUser = users.find(user => {
+  //       return user.id === Number(userId);
+  //     });
+  //     user = new User(userId, newUser.name, newUser.pantry);
+  //     pantry = new Pantry(newUser.pantry);
+  //
+  //     //fetch recipes
+  //     fetch('http://localhost:3001/api/v1/recipes')
+  //       .then(res => res.json())
+  //       .then(recipes => {
+  //         cookbook = new Cookbook(recipes);
+  //         populateCards(cookbook.recipes);
+  //       })
+  //
+  //     greetUser();
+  //   })
+  //   .catch(err => console.log('here\'s your error', err))
 
 }
 
