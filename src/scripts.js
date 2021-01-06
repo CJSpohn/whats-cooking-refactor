@@ -1,10 +1,6 @@
 import './css/base.scss';
 import './css/styles.scss';
 
-// import recipeData from './data/recipes';
-// import ingredientData from './data/ingredients';
-// import users from './data/users';
-
 import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
@@ -13,7 +9,6 @@ import Cookbook from './cookbook';
 let favButton = document.querySelector('.view-favorites');
 let homeButton = document.querySelector('.home')
 let cardArea = document.querySelector('.all-cards');
-// let cookbook = new Cookbook(recipeData);
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
