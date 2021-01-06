@@ -24,21 +24,23 @@ const onStartup = () => {
 
   fetch('http://localhost:3001/api/v1/users')
     .then(res => res.json())
-    .then(data => {
-      console.log(data)
-      let userId = (Math.floor(Math.random() * 49) + 1)
-      let newUser = data.find(user => {
+    .then(users => {
+      let userId = (Math.floor(Math.random() * 49) + 1);
+      let newUser = users.find(user => {
         return user.id === Number(userId);
-      })
-      console.log('newUser', newUser)
-      user = new User(userId, newUser.name, newUser.pantry)
-      pantry = new Pantry(newUser.pantry)
-    })
-    .catch(err => console.log(err))
+      });
+      user = new User(userId, newUser.name, newUser.pantry);
+      pantry = new Pantry(newUser.pantry);
 
-  // pantry = new Pantry(newUser.pantry)
-  // populateCards(cookbook.recipes);
-  // greetUser();
+      //fetch recipes
+      fetch('http://localhost:3001/api/v1/recipes')
+        .then(res => res.json())
+        .then(recipes => console.log(recipes))
+      // populateCards(cookbook.recipes);
+      // greetUser();
+    })
+    .catch(err => console.log('here\'s your error', err))
+
 }
 
 const viewFavorites = () => {
