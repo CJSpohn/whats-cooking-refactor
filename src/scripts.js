@@ -1,9 +1,9 @@
 import './css/base.scss';
 import './css/styles.scss';
 
-import recipeData from './data/recipes';
-import ingredientData from './data/ingredients';
-import users from './data/users';
+// import recipeData from './data/recipes';
+// import ingredientData from './data/ingredients';
+// import users from './data/users';
 
 import Pantry from './pantry';
 import Recipe from './recipe';
@@ -13,20 +13,32 @@ import Cookbook from './cookbook';
 let favButton = document.querySelector('.view-favorites');
 let homeButton = document.querySelector('.home')
 let cardArea = document.querySelector('.all-cards');
-let cookbook = new Cookbook(recipeData);
+// let cookbook = new Cookbook(recipeData);
 let user, pantry;
 
 
 
 const onStartup = () => {
-  let userId = (Math.floor(Math.random() * 49) + 1)
-  let newUser = users.find(user => {
-    return user.id === Number(userId);
-  });
-  user = new User(userId, newUser.name, newUser.pantry)
-  pantry = new Pantry(newUser.pantry)
-  populateCards(cookbook.recipes);
-  greetUser();
+  //fetch users
+  //fetch recipes
+
+  fetch('http://localhost:3001/api/v1/users')
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      let userId = (Math.floor(Math.random() * 49) + 1)
+      let newUser = data.find(user => {
+        return user.id === Number(userId);
+      })
+      console.log('newUser', newUser)
+      user = new User(userId, newUser.name, newUser.pantry)
+      pantry = new Pantry(newUser.pantry)
+    })
+    .catch(err => console.log(err))
+
+  // pantry = new Pantry(newUser.pantry)
+  // populateCards(cookbook.recipes);
+  // greetUser();
 }
 
 const viewFavorites = () => {
