@@ -1,10 +1,6 @@
 import './css/base.scss';
 import './css/styles.scss';
 
-import recipeData from './data/recipes';
-import ingredientData from './data/ingredients';
-import users from './data/users';
-
 import Pantry from './pantry';
 import Recipe from './recipe';
 import User from './user';
@@ -13,20 +9,39 @@ import Cookbook from './cookbook';
 let favButton = document.querySelector('.view-favorites');
 let homeButton = document.querySelector('.home')
 let cardArea = document.querySelector('.all-cards');
-let cookbook = new Cookbook(recipeData);
-let user, pantry;
+let user, pantry, cookbook, ingredients;
 
-
-
-const onStartup = () => {
-  let userId = (Math.floor(Math.random() * 49) + 1)
-  let newUser = users.find(user => {
+const instantiateUser = (usersData) => {
+  let userId = (Math.floor(Math.random() * 49) + 1);
+  let newUser = usersData.find(user => {
     return user.id === Number(userId);
   });
-  user = new User(userId, newUser.name, newUser.pantry)
-  pantry = new Pantry(newUser.pantry)
-  populateCards(cookbook.recipes);
-  greetUser();
+  user = new User(userId, newUser.name, newUser.pantry);
+  pantry = new Pantry(newUser.pantry);
+}
+
+const getData = () => {
+  let usersPromise = fetch('http://localhost:3001/api/v1/users')
+    .then(res => res.json());
+  let recipesPromise = fetch('http://localhost:3001/api/v1/recipes')
+    .then(res => res.json());
+  let ingredientsPromise = fetch('http://localhost:3001/api/v1/ingredients')
+    .then(res => res.json());
+
+  Promise.all([usersPromise, recipesPromise, ingredientsPromise])
+    .then(dataset => {
+      instantiateUser(dataset[0]);
+      cookbook = new Cookbook(dataset[1]);
+      ingredients = dataset[2];
+      //DOM UPDATES
+      greetUser();
+      populateCards(cookbook.recipes);
+      //DOM UPDATES
+    });
+}
+
+const onStartup = () => {
+  getData();
 }
 
 const viewFavorites = () => {
