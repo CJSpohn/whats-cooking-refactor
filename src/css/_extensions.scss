@@ -1,0 +1,14 @@
+.navButton: {
+  height: 100%;
+  width: 10%;
+  background-color: $headerColor;
+  font-size: 130%;
+  margin: 1%;
+  padding: 1%;
+  &:hover {
+    background-color: $buttonHover;
+  };
+  &:active {
+    background-color: $buttonActive;
+  }
+}
