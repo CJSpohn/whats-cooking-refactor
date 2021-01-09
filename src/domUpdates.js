@@ -36,14 +36,14 @@ let domUpdates = {
     })
     this.getFavorites(user);
   },
-  cardButtonConditionals(event) {
+  cardButtonConditionals(user, cardArea, favButton, cookbook, event) {
     if (event.target.classList.contains('favorite')) {
-      this.favoriteCard(event);
+      this.favoriteCard(user, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
     } else if (event.target.classList.contains('home')) {
       favButton.innerHTML = 'View Favorites';
-      this.populateCards(cookbook.recipes);
+      this.populateCards(cardArea, cookbook.recipes, user);
     }
   },
   viewFavorites(user, favButton, cardArea, cookbook) {
@@ -74,7 +74,7 @@ let domUpdates = {
       })
     }
   },
-  favoriteCard(cookbook, event) {
+  favoriteCard(user, favButton, cookbook, event) {
     let specificRecipe = cookbook.recipes.find(recipe => {
       if (recipe.id  === Number(event.target.id)) {
         return recipe;

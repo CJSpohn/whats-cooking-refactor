@@ -48,8 +48,8 @@ const onStartup = () => {
 
 window.onload = onStartup();
 homeButton.addEventListener('click',(event) => {
-  domUpdates.cardButtonConditionals(event)});
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
 favButton.addEventListener('click', () => {
   domUpdates.viewFavorites(user, favButton, cardArea, cookbook)});
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(event)});
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
