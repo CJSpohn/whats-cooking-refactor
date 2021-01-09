@@ -46,6 +46,7 @@ const onStartup = () => {
   getData();
 }
 
+
 window.onload = onStartup();
 homeButton.addEventListener('click',(event) => {
   domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
