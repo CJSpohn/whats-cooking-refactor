@@ -69,12 +69,10 @@ h1 {
   width: 25px;
   &:hover {
     background-color: $buttonHover;
-  }
-}
-
-
-.search-image:active {
-  background-color: $buttonActive;
+  };
+  &:active {
+    background-color: $buttonActive;
+  };
 }
 
 .search-input {
@@ -109,8 +107,7 @@ main {
   background-image: url(https://image.flaticon.com/icons/svg/32/32339.svg);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
-  display: flex;
+  background-size: 90% 90%;
   width: 12%;
 }
 
@@ -128,8 +125,8 @@ main {
   background-image: url(https://image.flaticon.com/icons/svg/149/149222.svg);
   background-repeat: no-repeat;
   background-position: center;
-  width: 13%;
-  padding: 1%;
+  background-size: 90% 90%;
+  width: 12%;
 }
 
 .all-cards {
