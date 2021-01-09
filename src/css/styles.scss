@@ -94,7 +94,7 @@ main {
 
 .card-button {
   border: 1px solid $borderColor;
-  height: 27px;
+  height: 29px;
   margin: 3px;
   &:hover {
     background-color: $buttonHover;
@@ -104,16 +104,18 @@ main {
   };
 }
 
-
-
 .add-button {
   background-color: $headerColor;
+  background-image: url(https://image.flaticon.com/icons/svg/32/32339.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   display: flex;
   width: 12%;
 }
 
 .add {
-  width: 100%;
+  width: 5vh;
 }
 
 .hidden {
@@ -127,6 +129,7 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   width: 13%;
+  padding: 1%;
 }
 
 .all-cards {
