@@ -1,7 +1,6 @@
 @import './variables';
 
 html {
-  border: 2px solid $borderColor;
   height: 100vh;
 }
 
@@ -14,17 +13,14 @@ body {
 
 .main-header {
   background-color: $headerColor;
-  border: 2px solid $borderColor;
   display: flex;
-  height: auto;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
+  // width: 100%;
 }
 
 .navButton {
   background-color: $headerColor;
-  border-left: 1px solid $borderColor;
-  border-right: 1px solid $borderColor;
   font-size: 130%;
   margin: 1%;
   &:hover {
@@ -36,11 +32,9 @@ body {
 }
 
 h1 {
-  border-right: 2px solid $borderColor;
   font-size: 255%;
   margin-top: 0;
   margin-bottom: 0;
-  padding-top: 10px;
   text-align: center;
   width: 30%;
 }
@@ -61,7 +55,6 @@ h1 {
 
 .search-button {
   background-color: $headerColor;
-  border: 1px solid $borderColor;
   width: 20%;
   height: 58px;
   margin-top: 3px;
@@ -83,7 +76,6 @@ h1 {
 }
 
 .search-input {
-  border: 1px solid $borderColor;
   font-size: 100%;
   height: 7vh;
   margin: 3px 7px 0px 0px;
@@ -91,6 +83,11 @@ h1 {
   width: 90%;
 }
 
+main {
+  background-color: $mainColor;
+  height: 100%;
+  width: 100%;
+}
 
 .card-button {
   border: 1px solid $borderColor;
@@ -173,7 +170,6 @@ h3 {
 }
 
 .recipe-name {
-
   display: block;
   font-size: 150%;
   text-align: center;
@@ -193,11 +189,6 @@ h3 {
   }
 }
 
-main {
-  background-color: $mainColor;
-  height: 100%;
-  width: 100%;
-}
 
 .favorite-active {
   background-image: url(https://image.flaticon.com/icons/svg/148/148841.svg);
