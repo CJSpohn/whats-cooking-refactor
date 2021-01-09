@@ -1,6 +1,7 @@
+@import './variables';
+
 html {
-  background-color: #37515C;
-  border: 2px solid #000;
+  border: 2px solid $borderColor;
   height: 100vh;
 }
 
@@ -12,8 +13,8 @@ body {
 
 
 .main-header {
-  background-color: #EBF5EE;
-  border: 2px solid #000;
+  background-color: $headerColor;
+  border: 2px solid $borderColor;
   display: flex;
   height: auto;
   justify-content: space-between;
@@ -21,15 +22,21 @@ body {
 }
 
 .navButton {
-  background-color: #EBF5EE;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
+  background-color: $headerColor;
+  border-left: 1px solid $borderColor;
+  border-right: 1px solid $borderColor;
   font-size: 130%;
   margin: 1%;
+  &:hover {
+    background-color: $buttonHover;
+  };
+  &:active {
+    background-color: $buttonActive;
+  }
 }
 
 h1 {
-  border-right: 2px solid #000;
+  border-right: 2px solid $borderColor;
   font-size: 255%;
   margin-top: 0;
   margin-bottom: 0;
@@ -53,30 +60,30 @@ h1 {
 }
 
 .search-button {
-  background-color: #EBF5EE;
-  border: 1px solid #000;
+  background-color: $headerColor;
+  border: 1px solid $borderColor;
   width: 20%;
   height: 58px;
   margin-top: 3px;
+  &:hover {
+    background-color: $buttonHover;
+  };
+  &:active {
+    background-color: $buttonActive;
+  };
 }
 
-.search-image:hover,
-.card-button:hover,
-.navButton:hover,
-.search-button:hover {
-  background-color: #cff2da;
+.search-image:hover {
+  background-color: $buttonHover;
 }
 
 
-.search-image:active,
-.card-button:active,
-.navButton:active,
-.search-button:active {
-  background-color: #C3C2C6;
+.search-image:active {
+  background-color: $buttonActive;
 }
 
 .search-input {
-  border: 1px solid #000;
+  border: 1px solid $borderColor;
   font-size: 100%;
   height: 7vh;
   margin: 3px 7px 0px 0px;
@@ -86,15 +93,21 @@ h1 {
 
 
 .card-button {
-  border: 1px solid #000;
+  border: 1px solid $borderColor;
   height: 27px;
   margin: 3px;
+  &:hover {
+    background-color: $buttonHover;
+  };
+  &:active {
+    background-color: $buttonActive;
+  };
 }
 
 
 
 .add-button {
-  background-color: #EBF5EE;
+  background-color: $headerColor;
   display: flex;
   width: 12%;
 }
@@ -109,7 +122,7 @@ h1 {
 
 
 .favorite {
-  background-color: #EBF5EE;
+  background-color: $headerColor;
   background-image: url(https://image.flaticon.com/icons/svg/149/149222.svg);
   background-repeat: no-repeat;
   background-position: center;
@@ -129,15 +142,15 @@ img {
 }
 
 .card {
-  background-color: #D7F2FE;
-  border: 3px solid #000;
+  background-color: $cardColor;
+  border: 3px solid $borderColor;
   width: 100%;
 }
 
 
 .card-header {
-  background-color: #EBF5EE;
-  border-bottom: 1px solid #000;
+  background-color: $headerColor;
+  border-bottom: 1px solid $borderColor;
   display: flex;
   justify-content: space-between;
 }
@@ -149,13 +162,13 @@ img {
 
 .all-recipe-info,
 ol {
-  color: #EBF5EE;
+  color: $headerColor;
   font-size: 220%;
   width: 100%;
 }
 
 h3 {
-  color: #EBF5EE;
+  color: $headerColor;
   font-size: 250%;
 }
 
@@ -166,23 +179,22 @@ h3 {
   text-align: center;
 }
 
-.card-picture:hover {
-  opacity: 0.7;
-}
-
-.card-picture:active {
-  border: 2px solid #000;
-}
 
 .card-picture {
-  border: 1px solid #000;
+  border: 1px solid $borderColor;
   height: 200px;
   margin: 10px 3% 8px 2.6%;
   width: 94%;
+  &:active {
+    border: 2px solid $borderColor;
+  }
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 main {
-  background-color: #37515C;
+  background-color: $mainColor;
   height: 100%;
   width: 100%;
 }
