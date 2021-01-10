@@ -8,9 +8,10 @@ import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
 
-let favButton = document.querySelector('.view-favorites');
-let homeButton = document.querySelector('.home')
-let cardArea = document.querySelector('.all-cards');
+const favButton = document.querySelector('.view-favorites');
+const cookbookButton = document.querySelector('.view-cookbook');
+const homeButton = document.querySelector('.home')
+const cardArea = document.querySelector('.all-cards');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -55,3 +56,6 @@ favButton.addEventListener('click', () => {
 cardArea.addEventListener('click', (event) => {
   domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)
 });
+cookbookButton.addEventListener('click', () => {
+  domUpdates.viewCookbook();
+})

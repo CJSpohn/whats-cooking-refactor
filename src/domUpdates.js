@@ -49,7 +49,7 @@ let domUpdates = {
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
     } else if (event.target.classList.contains('add-button')) {
-      this.updateCookbookStatus()
+      this.updateCookbookStatus(user, cookbookButton, cookbook, event)
     }
   },
 
@@ -68,6 +68,21 @@ let domUpdates = {
     }
   },
 
+  viewCookbook(user, cookbookButton, cardArea, cookbook) {
+    if (cardArea.classList.contains('all')) {
+      cardArea.classList.remove('all')
+    }
+    if (!user.favoriteRecipes.length) {
+      cookbookButton.innerHTML = 'You have no recipes to cook!';
+      this.populateCards(cardArea, cookbook, user);
+      return
+    } else {
+      cookbookButton.innerHTML = 'Refresh Cookbook'
+      cardArea.innerHTML = '';
+      this.drawCards(user.recipesToCook, cardArea, user)
+    }
+  },
+
   getRecipe(cookbook, event) {
     return cookbook.recipes.find(recipe => {
       if (recipe.id  === +(event.target.id)) {
@@ -76,7 +91,7 @@ let domUpdates = {
     })
   },
 
-  updateCookbookStatus() {
+  updateCookbookStatus(user, cookbookButton, cookbook, event) {
     let specificRecipe = getRecipe(cookbook, event);
     if (!event.target.classList.contains('cookbook-active')) {
       event.target.classList.add('cookbook-active');
