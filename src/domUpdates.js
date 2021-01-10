@@ -33,14 +33,19 @@ let domUpdates = {
     })
     this.getFavorites(user);
   },
+
+  goToHome(cardArea, cookbook, user, favButton) {
+    favButton.innerHTML = 'View Favorites';
+    this.populateCards(cardArea, cookbook.recipes, user);
+  },
+
   cardButtonConditionals(user, cardArea, favButton, cookbook, event) {
     if (event.target.classList.contains('favorite')) {
       this.favoriteCard(user, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
-    } else if (event.target.classList.contains('home')) {
-      favButton.innerHTML = 'View Favorites';
-      this.populateCards(cardArea, cookbook.recipes, user);
+    } else if (event.target.classList.contains('add-button')) {
+      //add to cookbook
     }
   },
   viewFavorites(user, favButton, cardArea, cookbook) {

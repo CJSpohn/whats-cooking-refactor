@@ -46,9 +46,12 @@ const onStartup = () => {
 
 
 window.onload = onStartup();
-homeButton.addEventListener('click',(event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
+homeButton.addEventListener('click', () => {
+  domUpdates.goToHome(cardArea, cookbook, user, favButton)
+});
 favButton.addEventListener('click', () => {
-  domUpdates.viewFavorites(user, favButton, cardArea, cookbook)});
+  domUpdates.viewFavorites(user, favButton, cardArea, cookbook)
+});
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)
+});
