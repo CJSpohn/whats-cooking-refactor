@@ -1,23 +1,25 @@
 let domUpdates = {
+
   greetUser(user) {
     const userName = document.querySelector('.user-name');
     userName.innerHTML =
     user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
   },
-  getFavorites(user) {
+
+  applyFavorites(user) {
     if (user.favoriteRecipes.length) {
       user.favoriteRecipes.forEach(recipe => {
         document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active');
       })
     }
   },
+
   populateCards(cardArea, cookbook, user) {
     cardArea.innerHTML = '';
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
-    this.drawCards(cookbook.recipes, cardArea, false);
-    this.getFavorites(user);
+    this.drawCards(cookbook.recipes, cardArea, user);
   },
 
   goToHome(cardArea, cookbook, user, favButton) {
@@ -25,7 +27,7 @@ let domUpdates = {
     this.populateCards(cardArea, cookbook, user);
   },
 
-  drawCards(data, cardArea, isFavorite) {
+  drawCards(data, cardArea, user) {
     data.forEach(recipe => {
       cardArea.insertAdjacentHTML('afterbegin', `
       <div id='${recipe.id}' class='card'>
@@ -38,12 +40,7 @@ let domUpdates = {
         <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
       </div>`)
     });
-    if (isFavorite) {
-      const favoritedCards = document.querySelectorAll('.favorite')
-      favoritedCards.forEach(card => {
-        card.classList.add('favorite-active')
-      })
-    }
+    this.applyFavorites(user);
   },
 
   cardButtonConditionals(user, cardArea, favButton, cookbook, event) {
@@ -67,7 +64,7 @@ let domUpdates = {
     } else {
       favButton.innerHTML = 'Refresh Favorites'
       cardArea.innerHTML = '';
-      this.drawCards(user.favoriteRecipes, cardArea, true)
+      this.drawCards(user.favoriteRecipes, cardArea, user)
     }
   },
 
@@ -86,6 +83,7 @@ let domUpdates = {
       user.removeRecipe(specificRecipe, 'favoriteRecipes')
     }
   },
+  
   displayDirections(event) {
     let newRecipeInfo = cookbook.recipes.find(recipe => {
       if (recipe.id === Number(event.target.id)) {
