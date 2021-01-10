@@ -54,8 +54,8 @@ favButton.addEventListener('click', () => {
   domUpdates.viewFavorites(user, favButton, cardArea, cookbook)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.viewCookbook();
+  domUpdates.viewCookbook(user, cookbookButton, cardArea, cookbook);
 })

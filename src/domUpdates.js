@@ -14,6 +14,14 @@ let domUpdates = {
     }
   },
 
+  applyCookbook(user) {
+    if (user.recipesToCook.length) {
+      user.recipesToCook.forEach(recipe => {
+        document.querySelector(`.cookbook${recipe.id}`).classList.add('cookbook-active');
+      })
+    }
+  },
+
   populateCards(cardArea, cookbook, user) {
     cardArea.innerHTML = '';
     if (cardArea.classList.contains('all')) {
@@ -32,7 +40,7 @@ let domUpdates = {
       cardArea.insertAdjacentHTML('afterbegin', `
       <div id='${recipe.id}' class='card'>
         <header id='${recipe.id}' class='card-header'>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
+          <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'>
           </button>
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
@@ -41,9 +49,10 @@ let domUpdates = {
       </div>`)
     });
     this.applyFavorites(user);
+    this.applyCookbook(user)
   },
 
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event) {
+  cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton) {
     if (event.target.classList.contains('favorite')) {
       this.updateFavoriteStatus(user, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
@@ -72,7 +81,7 @@ let domUpdates = {
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
-    if (!user.favoriteRecipes.length) {
+    if (!user.recipesToCook.length) {
       cookbookButton.innerHTML = 'You have no recipes to cook!';
       this.populateCards(cardArea, cookbook, user);
       return
@@ -92,7 +101,7 @@ let domUpdates = {
   },
 
   updateCookbookStatus(user, cookbookButton, cookbook, event) {
-    let specificRecipe = getRecipe(cookbook, event);
+    let specificRecipe = this.getRecipe(cookbook, event);
     if (!event.target.classList.contains('cookbook-active')) {
       event.target.classList.add('cookbook-active');
       cookbookButton.innerHTML = 'View Cookbook';
