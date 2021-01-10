@@ -7,19 +7,23 @@ let domUpdates = {
   },
 
   applyFavorites(user) {
-    if (user.favoriteRecipes.length) {
-      user.favoriteRecipes.forEach(recipe => {
-        document.querySelector(`.favorite${recipe.id}`).classList.add('favorite-active');
-      })
-    }
+    const favoriteIds = user.favoriteRecipes.map(recipe => recipe.id);
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(card => {
+      if (favoriteIds.includes(+card.id)) {
+        document.querySelector(`.favorite${card.id}`).classList.add('favorite-active');
+      }
+    })
   },
 
   applyCookbook(user) {
-    if (user.recipesToCook.length) {
-      user.recipesToCook.forEach(recipe => {
-        document.querySelector(`.cookbook${recipe.id}`).classList.add('cookbook-active');
-      })
-    }
+    const cookbookIds = user.recipesToCook.map(recipe => recipe.id);
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(card => {
+      if (cookbookIds.includes(+card.id)) {
+        document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
+      }
+    })
   },
 
   populateCards(cardArea, cookbook, user) {
@@ -40,8 +44,7 @@ let domUpdates = {
       cardArea.insertAdjacentHTML('afterbegin', `
       <div id='${recipe.id}' class='card'>
         <header id='${recipe.id}' class='card-header'>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'>
-          </button>
+          <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'></button>
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
         <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
@@ -49,7 +52,7 @@ let domUpdates = {
       </div>`)
     });
     this.applyFavorites(user);
-    this.applyCookbook(user)
+    this.applyCookbook(user);
   },
 
   cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton) {
