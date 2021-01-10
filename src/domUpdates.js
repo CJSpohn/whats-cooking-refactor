@@ -11,74 +11,69 @@ let domUpdates = {
       })
     }
   },
-  populateCards(cardArea, recipes, user) {
+  populateCards(cardArea, cookbook, user) {
     cardArea.innerHTML = '';
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
-    recipes.forEach(recipe => {
-      cardArea.insertAdjacentHTML('afterbegin', `
-      <div id='${recipe.id}' class='card'>
-        <header id='${recipe.id}' class='card-header'>
-          <label for='add-button' class='hidden'>Click to add recipe</label>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-          </button>
-          <label for='favorite-button' class='hidden'>Click to favorite recipe
-          </label>
-          <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
-        </header>
-        <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
-        <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
-      </div>`)
-    })
+    this.drawCards(cookbook.recipes, cardArea, false);
     this.getFavorites(user);
   },
 
   goToHome(cardArea, cookbook, user, favButton) {
     favButton.innerHTML = 'View Favorites';
-    this.populateCards(cardArea, cookbook.recipes, user);
+    this.populateCards(cardArea, cookbook, user);
+  },
+
+  drawCards(data, cardArea, isFavorite) {
+    data.forEach(recipe => {
+      cardArea.insertAdjacentHTML('afterbegin', `
+      <div id='${recipe.id}' class='card'>
+        <header id='${recipe.id}' class='card-header'>
+          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
+          </button>
+          <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
+        </header>
+        <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
+        <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
+      </div>`)
+    });
+    if (isFavorite) {
+      const favoritedCards = document.querySelectorAll('.favorite')
+      favoritedCards.forEach(card => {
+        card.classList.add('favorite-active')
+      })
+    }
   },
 
   cardButtonConditionals(user, cardArea, favButton, cookbook, event) {
     if (event.target.classList.contains('favorite')) {
-      this.favoriteCard(user, favButton, cookbook, event);
+      this.updateFavoriteStatus(user, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
     } else if (event.target.classList.contains('add-button')) {
-      //add to cookbook
+
     }
   },
+
   viewFavorites(user, favButton, cardArea, cookbook) {
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
     if (!user.favoriteRecipes.length) {
       favButton.innerHTML = 'You have no favorites!';
-      this.populateCards(cardArea, cookbook.recipes, user);
+      this.populateCards(cardArea, cookbook, user);
       return
     } else {
       favButton.innerHTML = 'Refresh Favorites'
       cardArea.innerHTML = '';
-      user.favoriteRecipes.forEach(recipe => {
-        cardArea.insertAdjacentHTML('afterbegin', `
-        <div id='${recipe.id}'class='card'>
-          <header id='${recipe.id}' class='card-header'>
-          <label for='add-button' class='hidden'>Click to add recipe</label>
-          <button id='${recipe.id}' aria-label='add-button' class='add-button card-button'>
-        <label for='favorite-button' class='hidden'>Click to favorite recipe
-        </label>
-        <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite-active card-button'>
-        </button></header>
-        <span id='${recipe.id}' class='recipe-name'>${recipe.name}</span>
-        <img id='${recipe.id}' tabindex='0' class='card-picture'
-        src='${recipe.image}' alt='Food from recipe'>
-        </div>`)
-      })
+      this.drawCards(user.favoriteRecipes, cardArea, true)
     }
   },
-  favoriteCard(user, favButton, cookbook, event) {
+
+  updateFavoriteStatus(user, favButton, cookbook, event) {
     let specificRecipe = cookbook.recipes.find(recipe => {
-      if (recipe.id  === Number(event.target.id)) {
+      if (recipe.id  === +(event.target.id)) {
         return recipe;
       }
     })
@@ -86,7 +81,7 @@ let domUpdates = {
       event.target.classList.add('favorite-active');
       favButton.innerHTML = 'View Favorites';
       user.saveRecipe(specificRecipe, 'favoriteRecipes');
-    } else if (event.target.classList.contains('favorite-active')) {
+    } else {
       event.target.classList.remove('favorite-active');
       user.removeRecipe(specificRecipe, 'favoriteRecipes')
     }
