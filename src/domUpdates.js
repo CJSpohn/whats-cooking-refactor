@@ -80,10 +80,10 @@ let domUpdates = {
     if (!event.target.classList.contains('favorite-active')) {
       event.target.classList.add('favorite-active');
       favButton.innerHTML = 'View Favorites';
-      user.addToFavorites(specificRecipe);
+      user.saveRecipe(specificRecipe, 'favoriteRecipes');
     } else if (event.target.classList.contains('favorite-active')) {
       event.target.classList.remove('favorite-active');
-      user.removeFromFavorites(specificRecipe)
+      user.removeRecipe(specificRecipe, 'favoriteRecipes')
     }
   },
   displayDirections(event) {

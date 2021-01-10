@@ -35,10 +35,8 @@ const getData = () => {
       instantiateUser(dataset[0]);
       cookbook = new Cookbook(dataset[1]);
       ingredients = dataset[2];
-      //DOM UPDATES
       domUpdates.greetUser(user);
       domUpdates.populateCards(cardArea, cookbook.recipes, user);
-      //DOM UPDATES
     });
 }
 

@@ -4,18 +4,18 @@ class User {
     this.name = name;
     this.pantry = pantry;
     this.favoriteRecipes = [];
-
+    this.recipesToCook = [];
   }
 
-  addToFavorites(recipe) {
-    if (!this.favoriteRecipes.includes(recipe)) {
-      this.favoriteRecipes.push(recipe)
+  saveRecipe(recipe, category) {
+    if (!this[category].includes(recipe)) {
+      this[category].push(recipe)
     }
   }
 
-  removeFromFavorites(recipe) {
-    const i = this.favoriteRecipes.indexOf(recipe);
-    this.favoriteRecipes.splice(i, 1)
+  removeRecipe(recipe, category) {
+    const i = this[category].indexOf(recipe);
+    this[category].splice(i, 1)
   }
 
   filterFavorites(tag) {
@@ -24,7 +24,7 @@ class User {
     });
   }
 
-  findFavorites(strgToSrch) {
+  findRecipes(strgToSrch) {
     return this.favoriteRecipes.filter(recipe => {
       return recipe.name.includes(strgToSrch)
       || recipe.ingredients.find(ingredient => {
