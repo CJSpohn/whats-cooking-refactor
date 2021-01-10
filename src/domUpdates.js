@@ -49,7 +49,7 @@ let domUpdates = {
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
     } else if (event.target.classList.contains('add-button')) {
-
+      this.updateCookbookStatus()
     }
   },
 
@@ -68,12 +68,28 @@ let domUpdates = {
     }
   },
 
-  updateFavoriteStatus(user, favButton, cookbook, event) {
-    let specificRecipe = cookbook.recipes.find(recipe => {
+  getRecipe(cookbook, event) {
+    return cookbook.recipes.find(recipe => {
       if (recipe.id  === +(event.target.id)) {
         return recipe;
       }
     })
+  },
+
+  updateCookbookStatus() {
+    let specificRecipe = getRecipe(cookbook, event);
+    if (!event.target.classList.contains('cookbook-active')) {
+      event.target.classList.add('cookbook-active');
+      cookbookButton.innerHTML = 'View Cookbook';
+      user.saveRecipe(specificRecipe, 'recipesToCook');
+    } else {
+      event.target.classList.remove('cookbook-active');
+      user.removeRecipe(specificRecipe, 'recipesToCook')
+    }
+  },
+
+  updateFavoriteStatus(user, favButton, cookbook, event) {
+    let specificRecipe = this.getRecipe(cookbook, event);
     if (!event.target.classList.contains('favorite-active')) {
       event.target.classList.add('favorite-active');
       favButton.innerHTML = 'View Favorites';
@@ -83,7 +99,7 @@ let domUpdates = {
       user.removeRecipe(specificRecipe, 'favoriteRecipes')
     }
   },
-  
+
   displayDirections(event) {
     let newRecipeInfo = cookbook.recipes.find(recipe => {
       if (recipe.id === Number(event.target.id)) {
