@@ -1,3 +1,5 @@
+import Recipe from './recipe';
+
 let domUpdates = {
 
   greetUser(user) {
@@ -64,11 +66,11 @@ let domUpdates = {
     })
   },
 
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton) {
+  cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients) {
     if (event.target.classList.contains('favorite')) {
       this.updateFavoriteStatus(user, cardArea, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event);
+      this.displayDirections(event, cookbook, ingredients, cardArea);
     } else if (event.target.classList.contains('add-button')) {
       this.updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event)
     }
@@ -147,18 +149,20 @@ let domUpdates = {
     }
   },
 
-  displayDirections(event) {
+  displayDirections(event, cookbook, ingredients, cardArea) {
     let newRecipeInfo = cookbook.recipes.find(recipe => {
       if (recipe.id === Number(event.target.id)) {
         return recipe;
       }
     })
-    let recipeObject = new Recipe(newRecipeInfo, ingredientsData);
-    let cost = recipeObject.calculateCost()
-    let costInDollars = (cost / 100).toFixed(2)
+    let currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    let recipeInformation = currentRecipe.calculateCostAndIngredients()
+    let cost = recipeInformation.costCounter;
+    let ingredientsUsed = recipeInformation.ingredientsUsed;
+    let costInDollars = (cost / 100).toFixed(2);
     cardArea.classList.add('all');
     cardArea.innerHTML = `
-    <h3>${recipeObject.name}</h3>
+    <h3>${currentRecipe.name}</h3>
       <p class='all-recipe-info'><strong>It will cost: </strong>
       <span class='cost recipe-info'>$${costInDollars}</span><br><br>
       <strong>You will need: </strong><span class='ingredients recipe-info'></span>
@@ -167,15 +171,15 @@ let domUpdates = {
       </p>`;
     let ingredientsSpan = document.querySelector('.ingredients');
     let instructionsSpan = document.querySelector('.instructions');
-    recipeObject.ingredients.forEach(ingredient => {
+    currentRecipe.ingredients.forEach((ingredient, index) => {
       ingredientsSpan.insertAdjacentHTML('afterbegin', `
       <ul>
         <li>${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
-        ${ingredient.name}</li>
+        ${ingredientsUsed[index]}</li>
       </ul>
       `)
     })
-    recipeObject.instructions.forEach(instruction => {
+    currentRecipe.instructions.forEach(instruction => {
       instructionsSpan.insertAdjacentHTML('beforebegin', `
       <li>${instruction.instruction}</li>
       `)
