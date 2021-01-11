@@ -48,7 +48,7 @@ const onStartup = () => {
 
 window.onload = onStartup();
 homeButton.addEventListener('click', () => {
-  domUpdates.goToHome(cardArea, cookbook, user, favButton)
+  domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
 });
 favButton.addEventListener('click', () => {
   domUpdates.viewFavorites(user, favButton, cardArea, cookbook)
