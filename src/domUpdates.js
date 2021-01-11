@@ -124,8 +124,8 @@ let domUpdates = {
     } else {
       event.target.classList.remove('cookbook-active');
       user.removeRecipe(specificRecipe, 'recipesToCook')
-      const cookbookLogo = document.querySelector('.cook-cl');
-      if (!cookbookLogo.classList.contains('hidden')) {
+      const chefLogo = document.querySelector('.cook-cl');
+      if (!chefLogo.classList.contains('hidden')) {
         this.drawCards(user.recipesToCook, cardArea, user);
       }
     }
@@ -139,7 +139,11 @@ let domUpdates = {
       user.saveRecipe(specificRecipe, 'favoriteRecipes');
     } else {
       event.target.classList.remove('favorite-active');
-      user.removeRecipe(specificRecipe, 'favoriteRecipes')
+      user.removeRecipe(specificRecipe, 'favoriteRecipes');
+      const chefLogo = document.querySelector('.fav-cl');
+      if (!chefLogo.classList.contains('hidden')) {
+        this.drawCards(user.favoriteRecipes, cardArea, user);
+      }
     }
   },
 
