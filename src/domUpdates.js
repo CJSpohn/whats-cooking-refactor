@@ -27,7 +27,6 @@ let domUpdates = {
   },
 
   populateCards(cardArea, cookbook, user) {
-    cardArea.innerHTML = '';
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
@@ -42,6 +41,7 @@ let domUpdates = {
   },
 
   drawCards(data, cardArea, user) {
+    cardArea.innerHTML = '';
     data.forEach(recipe => {
       cardArea.insertAdjacentHTML('afterbegin', `
       <div id='${recipe.id}' class='card'>
@@ -66,17 +66,15 @@ let domUpdates = {
 
   cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton) {
     if (event.target.classList.contains('favorite')) {
-      this.updateFavoriteStatus(user, favButton, cookbook, event);
+      this.updateFavoriteStatus(user, cardArea, favButton, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event);
     } else if (event.target.classList.contains('add-button')) {
-      this.updateCookbookStatus(user, cookbookButton, cookbook, event)
+      this.updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event)
     }
   },
 
   viewFavorites(user, favButton, cardArea, cookbook) {
-    this.hideChefLogo();
-    document.querySelector('.fav-cl').classList.remove('hidden');
     const errorMessage = document.querySelector('.error-message');
     errorMessage.innerText = '';
     if (cardArea.classList.contains('all')) {
@@ -84,18 +82,16 @@ let domUpdates = {
     }
     if (!user.favoriteRecipes.length) {
       errorMessage.innerText = 'You have no favorites!';
-      this.populateCards(cardArea, cookbook, user);
       return
     } else {
-      favButton.innerHTML = 'Refresh Favorites'
+      this.hideChefLogo();
+      document.querySelector('.fav-cl').classList.remove('hidden');
       cardArea.innerHTML = '';
       this.drawCards(user.favoriteRecipes, cardArea, user)
     }
   },
 
   viewCookbook(user, cookbookButton, cardArea, cookbook) {
-    this.hideChefLogo();
-    document.querySelector('.cook-cl').classList.remove('hidden');
     const errorMessage = document.querySelector('.error-message');
     errorMessage.innerText = '';
     if (cardArea.classList.contains('all')) {
@@ -103,11 +99,10 @@ let domUpdates = {
     }
     if (!user.recipesToCook.length) {
       errorMessage.innerText = 'Your cookbook is empty!'
-      this.populateCards(cardArea, cookbook, user);
       return
     } else {
-      cookbookButton.innerHTML = 'Refresh Cookbook'
-      cardArea.innerHTML = '';
+      this.hideChefLogo();
+      document.querySelector('.cook-cl').classList.remove('hidden');
       this.drawCards(user.recipesToCook, cardArea, user)
     }
   },
@@ -120,7 +115,7 @@ let domUpdates = {
     })
   },
 
-  updateCookbookStatus(user, cookbookButton, cookbook, event) {
+  updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event) {
     let specificRecipe = this.getRecipe(cookbook, event);
     if (!event.target.classList.contains('cookbook-active')) {
       event.target.classList.add('cookbook-active');
@@ -129,10 +124,14 @@ let domUpdates = {
     } else {
       event.target.classList.remove('cookbook-active');
       user.removeRecipe(specificRecipe, 'recipesToCook')
+      const cookbookLogo = document.querySelector('.cook-cl');
+      if (!cookbookLogo.classList.contains('hidden')) {
+        this.drawCards(user.recipesToCook, cardArea, user);
+      }
     }
   },
 
-  updateFavoriteStatus(user, favButton, cookbook, event) {
+  updateFavoriteStatus(user, cardArea, favButton, cookbook, event) {
     let specificRecipe = this.getRecipe(cookbook, event);
     if (!event.target.classList.contains('favorite-active')) {
       event.target.classList.add('favorite-active');
