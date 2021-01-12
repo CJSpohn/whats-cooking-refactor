@@ -186,10 +186,9 @@ let domUpdates = {
     })
   },
 
-  searchRecipesByNameOrIngredient(user, string) {
-    console.log(string)
-    const matchingRecipes = user.findRecipes(string);
-    console.log(matchingRecipes)
+  searchRecipesByNameOrIngredient(user, string, recipes, ingredients, cardArea) {
+    const matchingRecipes = user.findRecipes(string, recipes, ingredients);
+    this.drawCards(matchingRecipes, cardArea, user)
   }
 }
 

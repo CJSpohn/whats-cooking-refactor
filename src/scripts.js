@@ -61,5 +61,5 @@ cookbookButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.recipesToCook, cardArea);
 })
 searchInput.addEventListener('keyup', () => {
-  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value);
+  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
 })

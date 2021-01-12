@@ -24,13 +24,15 @@ class User {
     });
   }
 
-  findRecipes(strgToSrch) {
-    return this.favoriteRecipes.filter(recipe => {
-      return recipe.name.includes(strgToSrch)
-      || recipe.ingredients.find(ingredient => {
-        return ingredient.name.includes(strgToSrch)
-      });
-    });
+  findRecipes(stringToSearch, recipes, ingredients) {
+    const matchingRecipes = recipes.filter(recipe => {
+      console.log(recipe.name, stringToSearch)
+      return recipe.name.toLowerCase().includes(stringToSearch.toLowerCase())
+        // || recipe.ingredients.forEach(recipeIngredient => {
+        //   return ingredients.find(ingredient => ingredient.id === recipeIngredient.id)
+        // })
+    })
+    return matchingRecipes
   }
 }
 
