@@ -10,6 +10,7 @@ import Cookbook from './cookbook';
 
 const favButton = document.querySelector('.view-favorites');
 const cookbookButton = document.querySelector('.view-cookbook');
+const pantryButton = document.querySelector('.view-pantry');
 const homeButton = document.querySelector('.home')
 const cardArea = document.querySelector('.all-cards');
 const searchInput = document.querySelector('.search-input');
@@ -55,11 +56,14 @@ favButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients)
+  domUpdates.cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry)
 });
 cookbookButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.recipesToCook, cardArea);
-})
+});
 searchInput.addEventListener('keyup', () => {
   domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
-})
+});
+pantryButton.addEventListener('click', () => {
+  domUpdates.changePage(event, user, pantry.contents, cardArea)
+});
