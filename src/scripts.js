@@ -37,7 +37,7 @@ const getData = () => {
       cookbook = new Cookbook(dataset[1]);
       ingredients = dataset[2];
       domUpdates.greetUser(user);
-      domUpdates.populateCards(cardArea, cookbook, user);
+      domUpdates.drawCards(cookbook.recipes, cardArea, user);
     });
 }
 

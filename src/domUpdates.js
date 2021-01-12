@@ -55,6 +55,10 @@ let domUpdates = {
     })
   },
 
+  clearError() {
+    document.querySelector('.error-message').innerText = '';
+  },
+
   //CARD DISPLAY
   drawCards(data, cardArea, user) {
     cardArea.innerHTML = '';
@@ -93,49 +97,50 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients) {
+  cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients) {
     if (event.target.classList.contains('favorite')) {
-      this.updateFavoriteStatus(user, cardArea, favButton, cookbook, event);
+      this.updateButtonStatus(user, cardArea, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event, cookbook, ingredients, cardArea);
     } else if (event.target.classList.contains('add-button')) {
-      this.updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event)
+      this.updateButtonStatus(user, cardArea, cookbook, event)
     }
   },
 
-
-  updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event) {
-    let specificRecipe = this.getRecipe(cookbook, event);
-    if (!event.target.classList.contains('cookbook-active')) {
-      event.target.classList.add('cookbook-active');
-      document.querySelector('.error-message').innerText = '';
-      user.saveRecipe(specificRecipe, 'recipesToCook');
+  updateButtonStatus(user, cardArea, cookbook, event) {
+    const { dataset, selector, active } = this.determineButton(event);
+    const specificRecipe = this.getRecipe(cookbook, event);
+    if (!event.target.classList.contains(active)) {
+      user.saveRecipe(specificRecipe, dataset);
+      this.clearError();
     } else {
-      event.target.classList.remove('cookbook-active');
-      user.removeRecipe(specificRecipe, 'recipesToCook')
-      const chefLogo = document.querySelector('.cook-cl');
-      if (!chefLogo.classList.contains('hidden')) {
-        this.drawCards(user.recipesToCook, cardArea, user);
-      }
+      user.removeRecipe(specificRecipe, dataset);
+      this.applyLiveChangeToPage(selector, dataset, cardArea, user);
+    }
+    event.target.classList.toggle(active);
+  },
+
+  determineButton(event) {
+    let dataset, selector, active;
+    if (event.target.classList.contains('add-button')) {
+      dataset = 'recipesToCook';
+      selector = '.cook-cl';
+      active = 'cookbook-active';
+    } else if (event.target.classList.contains('favorite')) {
+      dataset = 'favoriteRecipes';
+      selector = '.fav-cl';
+      active = 'favorite-active';
+    }
+    return { dataset, selector, active };
+  },
+
+  applyLiveChangeToPage(selector, dataset, cardArea, user) {
+    const chefLogo = document.querySelector(selector);
+    if (!chefLogo.classList.contains('hidden')) {
+      this.drawCards(user[dataset], cardArea, user);
     }
   },
 
-  updateFavoriteStatus(user, cardArea, favButton, cookbook, event) {
-    let specificRecipe = this.getRecipe(cookbook, event);
-    if (!event.target.classList.contains('favorite-active')) {
-      event.target.classList.add('favorite-active');
-      document.querySelector('.error-message').innerText = '';
-      user.saveRecipe(specificRecipe, 'favoriteRecipes');
-    } else {
-      event.target.classList.remove('favorite-active');
-      user.removeRecipe(specificRecipe, 'favoriteRecipes');
-      const chefLogo = document.querySelector('.fav-cl');
-      if (!chefLogo.classList.contains('hidden')) {
-        this.drawCards(user.favoriteRecipes, cardArea, user);
-      }
-    }
-  },
-  
   getRecipe(cookbook, event) {
     return cookbook.recipes.find(recipe => {
       if (recipe.id  === +(event.target.id)) {
