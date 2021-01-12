@@ -162,10 +162,9 @@ let domUpdates = {
     this.populateInstructions(currentRecipe);
     let missingIngredients = pantry.checkPantryForIngredients(currentRecipe);
     if (!missingIngredients.length) {
-      // you have enough to cook this recipe
+      this.notifyUserRecipeListFulfilled();
     } else {
       this.displayMissingIngredients(missingIngredients);
-      console.log('missing')
     }
   },
 
@@ -178,38 +177,44 @@ let domUpdates = {
     })
   },
 
+  notifyUserRecipeListFulfilled() {
+    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    missingIngredientsSection.innerHTML += `
+        <p class="all-recipe-info">You have enough ingredients to make this recipe!</p>
+        `;
+  },
+
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
-    cardArea.innerHTML = `
-    <div class="recipe-container">
-    <h2 class="recipe-heading">${currentRecipe.name}</h2>
+    let recipeArea = document.querySelector('.recipe-area')
+    recipeArea.innerHTML += `
+      <h2 class="recipe-heading">${currentRecipe.name}</h2>
       <section class="all-recipe-info">
-        <p class="cost recipe-info">It will cost: $${costInDollars}</p>
+        <p class="cost recipe-info">This recipe will cost: $${costInDollars}</p>
         <p class="ingredients recipe-info">You will need:</p>
+        <ul class="ingredients-list"></ul>
         <p class="instructions recipe-info">Instructions:<p>
-        <ol></ol>
+        <ol class="instructions-list"></ol>
       </section>
-    </div>
-    `;
+      `;
+    cardArea.innerHTML = '';
   },
 
   populateIngredients(currentRecipe, ingredientsUsed) {
     let ingredientsDisplay = document.querySelector('.ingredients');
     currentRecipe.ingredients.forEach((ingredient, index) => {
-      ingredientsDisplay.insertAdjacentHTML('afterbegin', `
-      <ul>
+      ingredientsDisplay.innerHTML += `
         <li>${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
         ${ingredientsUsed[index]}</li>
-      </ul>
-      `)
+      `
     })
   },
 
   populateInstructions(currentRecipe) {
-    let ingredientsInstructions = document.querySelector('.instructions');
+    let ingredientsInstructions = document.querySelector('.instructions-list');
     currentRecipe.instructions.forEach(instruction => {
-      ingredientsInstructions.insertAdjacentHTML('beforebegin', `
+      ingredientsInstructions.innerHTML += `
       <li>${instruction.instruction}</li>
-      `)
+      `
     })
   },
 
