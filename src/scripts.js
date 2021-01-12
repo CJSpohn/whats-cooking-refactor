@@ -8,9 +8,11 @@ import Recipe from './recipe';
 import User from './user';
 import Cookbook from './cookbook';
 
-let favButton = document.querySelector('.view-favorites');
-let homeButton = document.querySelector('.home')
-let cardArea = document.querySelector('.all-cards');
+const favButton = document.querySelector('.view-favorites');
+const cookbookButton = document.querySelector('.view-cookbook');
+const homeButton = document.querySelector('.home')
+const cardArea = document.querySelector('.all-cards');
+const searchInput = document.querySelector('.search-input');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -35,10 +37,8 @@ const getData = () => {
       instantiateUser(dataset[0]);
       cookbook = new Cookbook(dataset[1]);
       ingredients = dataset[2];
-      //DOM UPDATES
       domUpdates.greetUser(user);
-      domUpdates.populateCards(cardArea, cookbook.recipes, user);
-      //DOM UPDATES
+      domUpdates.drawCards(cookbook.recipes, cardArea, user);
     });
 }
 
@@ -48,9 +48,18 @@ const onStartup = () => {
 
 
 window.onload = onStartup();
-homeButton.addEventListener('click',(event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
+homeButton.addEventListener('click', () => {
+  domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
+});
 favButton.addEventListener('click', () => {
-  domUpdates.viewFavorites(user, favButton, cardArea, cookbook)});
+  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
+});
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event)});
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients)
+});
+cookbookButton.addEventListener('click', () => {
+  domUpdates.changePage(event, user, user.recipesToCook, cardArea);
+})
+searchInput.addEventListener('keyup', () => {
+  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
+})
