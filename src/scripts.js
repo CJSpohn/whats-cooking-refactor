@@ -12,6 +12,7 @@ const favButton = document.querySelector('.view-favorites');
 const cookbookButton = document.querySelector('.view-cookbook');
 const homeButton = document.querySelector('.home')
 const cardArea = document.querySelector('.all-cards');
+const searchInput = document.querySelector('.search-input');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -58,4 +59,7 @@ cardArea.addEventListener('click', (event) => {
 });
 cookbookButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.recipesToCook, cardArea);
+})
+searchInput.addEventListener('keyup', () => {
+  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value);
 })

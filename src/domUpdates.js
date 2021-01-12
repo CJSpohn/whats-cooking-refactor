@@ -11,14 +11,12 @@ let domUpdates = {
   //NAV BUTTONS
   goToHome(cardArea, cookbook, user) {
     this.hideChefLogos();
-    this.verifyCardArea(cardArea);
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
   },
 
   changePage(event, user, dataset, cardArea) {
-    this.verifyCardArea(cardArea);
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
@@ -90,12 +88,6 @@ let domUpdates = {
     });
   },
 
-  verifyCardArea(cardArea) {
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
-    }
-  },
-
   //CARD BUTTONS
   cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients) {
     if (event.target.classList.contains('favorite')) {
@@ -149,21 +141,20 @@ let domUpdates = {
     })
   },
 
+  //RECIPE INFORMATION
   displayDirections(event, cookbook, ingredients, cardArea) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
     let currentRecipe = new Recipe(newRecipeInfo, ingredients);
-    console.log('currentRecipe', currentRecipe)
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
-    let ingredientsUsed = recipeInformation.ingredientsUsed;
     let costInDollars = (cost / 100).toFixed(2);
-    cardArea.classList.add('all');
-    this.showRecipeInstructions(cardArea, currentRecipe, costInDollars);
+    let ingredientsUsed = recipeInformation.ingredientsUsed;
+    this.showRecipeInformation(cardArea, currentRecipe, costInDollars);
     this.populateIngredients(currentRecipe, ingredientsUsed);
     this.populateInstructions(currentRecipe);
   },
 
-  showRecipeInstructions(cardArea, currentRecipe, costInDollars) {
+  showRecipeInformation(cardArea, currentRecipe, costInDollars) {
     cardArea.innerHTML = `
     <h3>${currentRecipe.name}</h3>
       <p class='all-recipe-info'><strong>It will cost: </strong>
@@ -193,6 +184,12 @@ let domUpdates = {
       <li>${instruction.instruction}</li>
       `)
     })
+  },
+
+  searchRecipesByNameOrIngredient(user, string) {
+    console.log(string)
+    const matchingRecipes = user.findRecipes(string);
+    console.log(matchingRecipes)
   }
 }
 
