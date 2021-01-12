@@ -35,6 +35,9 @@ let domUpdates = {
     } else if (classList.contains('view-cookbook')) {
       error = 'Your cookbook is empty!';
       selector = '.cook-cl';
+    } else if (classList.contains('view-pantry')) {
+      error = '';
+      selector = '.pantry-cl';
     }
     return { error, selector }
   },
@@ -43,7 +46,12 @@ let domUpdates = {
     this.hideChefLogos();
     document.querySelector(selector).classList.remove('hidden');
     cardArea.innerHTML = '';
-    this.drawCards(dataset, cardArea, user)
+    if (selector === '.pantry-cl') {
+      // call pantry method
+      cardArea.innerHTML += dataset;
+    } else {
+      this.drawCards(dataset, cardArea, user);
+    }
   },
 
   hideChefLogos() {
@@ -89,11 +97,11 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients) {
+  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry) {
     if (event.target.classList.contains('favorite')) {
       this.updateButtonStatus(user, cardArea, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event, cookbook, ingredients, cardArea);
+      this.displayDirections(event, cookbook, ingredients, cardArea, pantry);
     } else if (event.target.classList.contains('add-button')) {
       this.updateButtonStatus(user, cardArea, cookbook, event)
     }
@@ -142,7 +150,7 @@ let domUpdates = {
   },
 
   //RECIPE INFORMATION
-  displayDirections(event, cookbook, ingredients, cardArea) {
+  displayDirections(event, cookbook, ingredients, cardArea, pantry) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
     let currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
@@ -152,6 +160,7 @@ let domUpdates = {
     this.showRecipeInformation(cardArea, currentRecipe, costInDollars);
     this.populateIngredients(currentRecipe, ingredientsUsed);
     this.populateInstructions(currentRecipe);
+    pantry.checkPantryForIngredients(currentRecipe);
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
@@ -160,7 +169,7 @@ let domUpdates = {
     <h2 class="recipe-heading">${currentRecipe.name}</h2>
       <section class="all-recipe-info">
         <p class="cost recipe-info">It will cost: $${costInDollars}</p>
-        <p class="ingredients recipe-info">You will need:</p> 
+        <p class="ingredients recipe-info">You will need:</p>
         <p class="instructions recipe-info">Instructions:<p>
         <ol></ol>
       </section>
