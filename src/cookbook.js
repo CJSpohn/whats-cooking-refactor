@@ -12,6 +12,5 @@ class Cookbook {
     })
   }
 }
-//error handling for empty strings or characters that aren't letters?
 
 export default Cookbook;
