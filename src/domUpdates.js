@@ -51,8 +51,8 @@ let domUpdates = {
           <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'></button>
           <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
         </header>
-        <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
         <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
+        <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
       </div>`)
     });
     this.applyFavorites(user);
@@ -163,7 +163,7 @@ let domUpdates = {
     cardArea.classList.add('all');
     cardArea.innerHTML = `
     <div class="recipe-container">
-    <h3 class="recipe-heading">${currentRecipe.name}</h3>
+    <h2 class="recipe-heading">${currentRecipe.name}</h2>
       <section class="all-recipe-info">
         <p class="cost recipe-info">It will cost: $${costInDollars}</p>
         <p class="ingredients recipe-info">You will need:</p> 
