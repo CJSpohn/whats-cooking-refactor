@@ -18,9 +18,8 @@ class Pantry {
           }
         }
       })
-      return ingredientsNeeded;
     })
-
+    return ingredientsNeeded;
   }
 }
 

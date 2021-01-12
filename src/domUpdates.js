@@ -160,7 +160,22 @@ let domUpdates = {
     this.showRecipeInformation(cardArea, currentRecipe, costInDollars);
     this.populateIngredients(currentRecipe, ingredientsUsed);
     this.populateInstructions(currentRecipe);
-    pantry.checkPantryForIngredients(currentRecipe);
+    let missingIngredients = pantry.checkPantryForIngredients(currentRecipe);
+    if (!missingIngredients.length) {
+      // you have enough to cook this recipe
+    } else {
+      this.displayMissingIngredients(missingIngredients);
+      console.log('missing')
+    }
+  },
+
+  displayMissingIngredients(missingIngredients) {
+    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    missingIngredients.forEach(ingredient => {
+      missingIngredientsSection.innerHTML += `
+        <p class="all-recipe-info">You will need ${ingredient.amount} ${ingredient.unit} of ${ingredient.ingredient}</p>
+        `;
+    })
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
