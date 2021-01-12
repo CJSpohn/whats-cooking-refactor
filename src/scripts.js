@@ -53,17 +53,17 @@ homeButton.addEventListener('click', () => {
   domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
 });
 favButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
+  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea, pantry, ingredients)
 });
 cardArea.addEventListener('click', (event) => {
   domUpdates.cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.recipesToCook, cardArea);
+  domUpdates.changePage(event, user, user.recipesToCook, cardArea, pantry, ingredients);
 });
 searchInput.addEventListener('keyup', () => {
   domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
 });
 pantryButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, pantry.contents, cardArea)
+  domUpdates.changePage(event, user, pantry.contents, cardArea, pantry, ingredients)
 });

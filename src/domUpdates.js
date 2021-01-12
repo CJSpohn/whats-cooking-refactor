@@ -17,14 +17,14 @@ let domUpdates = {
     this.hideRecipeDetails();
   },
 
-  changePage(event, user, dataset, cardArea) {
+  changePage(event, user, dataset, cardArea, pantry, ingredients) {
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
     if (!dataset.length) {
       return errorMessage.innerText = error
     } else {
-      this.displayPage(user, dataset, cardArea, selector)
+      this.displayPage(user, dataset, cardArea, selector, pantry, ingredients)
     }
     this.hideRecipeDetails();
   },
@@ -44,20 +44,30 @@ let domUpdates = {
     return { error, selector }
   },
 
-  displayPage(user, dataset, cardArea, selector) {
+  displayPage(user, dataset, cardArea, selector, pantry, ingredients) {
     this.hideChefLogos();
     document.querySelector(selector).classList.remove('hidden');
     cardArea.innerHTML = '';
     if (selector === '.pantry-cl') {
       // call pantry method
-      cardArea.innerHTML += dataset;
+      pantry.displayPantry(ingredients);
     } else {
       this.drawCards(dataset, cardArea, user);
     }
   },
 
+  // displayPantry(user) {
+  //   let pantryDisplay = document.querySelector('.ingredients-list');
+  //     user.pantry.forEach(item => {
+  //       console.log(item);
+  //       pantryDisplay.innerHTML += `
+  //         <p>${item.name}: ${item.amount}</p>
+  //       `
+  //     })
+  // },
+
   hideRecipeDetails() {
-    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    let missingIngredientsSection = document.querySelector('.ingredients-list');
     let recipeArea = document.querySelector('.recipe-area');
     missingIngredientsSection.innerHTML = '';
     recipeArea.innerHTML = '';
@@ -178,7 +188,7 @@ let domUpdates = {
   },
 
   displayMissingIngredients(missingIngredients) {
-    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    let missingIngredientsSection = document.querySelector('.ingredients-list');
     missingIngredients.forEach(ingredient => {
       missingIngredientsSection.innerHTML += `
         <p class="all-recipe-info">You will need ${ingredient.amount} ${ingredient.unit} of ${ingredient.ingredient}</p>
@@ -187,7 +197,7 @@ let domUpdates = {
   },
 
   notifyUserRecipeListFulfilled() {
-    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    let missingIngredientsSection = document.querySelector('.ingredients-list');
     missingIngredientsSection.innerHTML += `
         <p class="all-recipe-info">You have enough ingredients to make this recipe!</p>
         `;
