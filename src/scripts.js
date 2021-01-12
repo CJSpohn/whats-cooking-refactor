@@ -54,7 +54,7 @@ favButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients)
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients)
 });
 cookbookButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.recipesToCook, cardArea);

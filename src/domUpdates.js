@@ -150,17 +150,20 @@ let domUpdates = {
   },
 
   displayDirections(event, cookbook, ingredients, cardArea) {
-    let newRecipeInfo = cookbook.recipes.find(recipe => {
-      if (recipe.id === Number(event.target.id)) {
-        return recipe;
-      }
-    })
+    let newRecipeInfo = this.getRecipe(cookbook, event);
     let currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    console.log('currentRecipe', currentRecipe)
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
     let ingredientsUsed = recipeInformation.ingredientsUsed;
     let costInDollars = (cost / 100).toFixed(2);
     cardArea.classList.add('all');
+    this.showRecipeInstructions(cardArea, currentRecipe, costInDollars);
+    this.populateIngredients(currentRecipe, ingredientsUsed);
+    this.populateInstructions(currentRecipe);
+  },
+
+  showRecipeInstructions(cardArea, currentRecipe, costInDollars) {
     cardArea.innerHTML = `
     <h3>${currentRecipe.name}</h3>
       <p class='all-recipe-info'><strong>It will cost: </strong>
@@ -169,8 +172,10 @@ let domUpdates = {
       <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
       </span></ol>
       </p>`;
+  },
+
+  populateIngredients(currentRecipe, ingredientsUsed) {
     let ingredientsSpan = document.querySelector('.ingredients');
-    let instructionsSpan = document.querySelector('.instructions');
     currentRecipe.ingredients.forEach((ingredient, index) => {
       ingredientsSpan.insertAdjacentHTML('afterbegin', `
       <ul>
@@ -179,6 +184,10 @@ let domUpdates = {
       </ul>
       `)
     })
+  },
+
+  populateInstructions(currentRecipe) {
+    let instructionsSpan = document.querySelector('.instructions');
     currentRecipe.instructions.forEach(instruction => {
       instructionsSpan.insertAdjacentHTML('beforebegin', `
       <li>${instruction.instruction}</li>
