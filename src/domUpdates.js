@@ -14,6 +14,7 @@ let domUpdates = {
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
+    this.hideRecipeDetails();
   },
 
   changePage(event, user, dataset, cardArea) {
@@ -25,6 +26,7 @@ let domUpdates = {
     } else {
       this.displayPage(user, dataset, cardArea, selector)
     }
+    this.hideRecipeDetails();
   },
 
   determinePage(classList) {
@@ -52,6 +54,13 @@ let domUpdates = {
     } else {
       this.drawCards(dataset, cardArea, user);
     }
+  },
+
+  hideRecipeDetails() {
+    let missingIngredientsSection = document.querySelector('.missing-ingredients');
+    let recipeArea = document.querySelector('.recipe-area');
+    missingIngredientsSection.innerHTML = '';
+    recipeArea.innerHTML = '';
   },
 
   hideChefLogos() {
