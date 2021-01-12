@@ -62,10 +62,12 @@ describe('User', () => {
   });
 
   it('should be able to check ingredients in User/s pantry for a given recipe', () => {
-    expect(user1.checkPantry(recipeData[1)).to.eql('You have the ingredients!');//replace index with pantry list?
+    expect(user1.checkPantry(recipeData[1])).to.eql('You have the ingredients!');
   });
 
   it('should inform User if they lack required ingredients for a given recipe', () => {
-    expect(user1.checkPantry(recipeData[2])).to.eql(missingIngredientsWithPrice);//replace answer with ingredient list and price
+    expect(user1.checkPantry(recipeData[2])).to.eql(missingIngredientsWithPrice);
   });
 });
+//replace index with pantry list?
+//replace answer with ingredient list and price
