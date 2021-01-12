@@ -14,19 +14,19 @@ describe('Recipe', () => {
 
   describe('Recipe Data', () => {
 
-    it('Should hold its own ingredient data', () => {
+    it('should have a list of ingredients', () => {
       expect(recipe.ingredients).to.equal(recipeData[47].ingredients);
     })
 
-    it('Should hold its own instruction data', () => {
+    it('should have a type or tag to search', () => {
       expect(recipe.instructions).to.equal(recipeData[47].instructions);
     })
   })
 
-  it('Should be able to calculate the cost of its ingredients', () => {
-    // console.log(ingredientsData);
+  it('should be able to calculate the cost of its ingredients', () => {
     expect(recipe.calculateCost()).to.equal(4166);
   });
+  it('should be able to access instructions for a recipe', () => {
 
-
+  });
 });
