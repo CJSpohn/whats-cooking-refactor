@@ -51,11 +51,11 @@ homeButton.addEventListener('click', () => {
   domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
 });
 favButton.addEventListener('click', () => {
-  domUpdates.viewFavorites(user, favButton, cardArea, cookbook)
+  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
 });
 cardArea.addEventListener('click', (event) => {
   domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.viewCookbook(user, cookbookButton, cardArea, cookbook);
+  domUpdates.changePage(event, user, user.recipesToCook, cardArea);
 })

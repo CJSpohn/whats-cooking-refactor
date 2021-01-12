@@ -18,19 +18,23 @@ let domUpdates = {
       };
       if (cookbookIds.includes(+card.id)) {
         document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
-      }
+      };
     });
   },
 
-  populateCards(cardArea, cookbook, user) {
+  verifyCardArea(cardArea) {
     if (cardArea.classList.contains('all')) {
       cardArea.classList.remove('all')
     }
+  },
+
+  populateCards(cardArea, cookbook, user) {
+    this.verifyCardArea(cardArea);
     this.drawCards(cookbook.recipes, cardArea, user);
   },
 
   goToHome(cardArea, cookbook, user, favButton, cookbookButton) {
-    this.hideChefLogo();
+    this.hideChefLogos();
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.populateCards(cardArea, cookbook, user);
@@ -52,7 +56,7 @@ let domUpdates = {
     this.applyIconStatus(user);
   },
 
-  hideChefLogo() {
+  hideChefLogos() {
     const chefLogos = document.querySelectorAll('.chef-logo');
     chefLogos.forEach(logo => {
       logo.classList.add('hidden');
@@ -69,37 +73,35 @@ let domUpdates = {
     }
   },
 
-  viewFavorites(user, favButton, cardArea, cookbook) {
-    const errorMessage = document.querySelector('.error-message');
-    errorMessage.innerText = '';
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
+  determinePage(classList) {
+    let error, selector;
+    if (classList.contains('view-favorites')) {
+      error = 'You have no favorites!';
+      selector = '.fav-cl';
+    } else if (classList.contains('view-cookbook')) {
+      error = 'Your cookbook is empty!';
+      selector = '.cook-cl';
     }
-    if (!user.favoriteRecipes.length) {
-      errorMessage.innerText = 'You have no favorites!';
-      return
+    return { error, selector }
+  },
+
+  changePage(event, user, dataset, cardArea) {
+    this.verifyCardArea(cardArea);
+    const classList = event.target.classList
+    const errorMessage = document.querySelector('.error-message');
+    const { error, selector } = this.determinePage(classList);
+    if (!dataset.length) {
+      return errorMessage.innerText = error
     } else {
-      this.hideChefLogo();
-      document.querySelector('.fav-cl').classList.remove('hidden');
-      cardArea.innerHTML = '';
-      this.drawCards(user.favoriteRecipes, cardArea, user)
+      this.displayPage(user, dataset, cardArea, error, selector)
     }
   },
 
-  viewCookbook(user, cookbookButton, cardArea, cookbook) {
-    const errorMessage = document.querySelector('.error-message');
-    errorMessage.innerText = '';
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
-    }
-    if (!user.recipesToCook.length) {
-      errorMessage.innerText = 'Your cookbook is empty!'
-      return
-    } else {
-      this.hideChefLogo();
-      document.querySelector('.cook-cl').classList.remove('hidden');
-      this.drawCards(user.recipesToCook, cardArea, user)
-    }
+  displayPage(user, dataset, cardArea, error, selector) {
+    this.hideChefLogos();
+    document.querySelector(selector).classList.remove('hidden');
+    cardArea.innerHTML = '';
+    this.drawCards(dataset, cardArea, user)
   },
 
   getRecipe(cookbook, event) {
