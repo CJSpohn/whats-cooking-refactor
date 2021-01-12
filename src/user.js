@@ -25,8 +25,8 @@ class User {
   }
 
   findRecipes(stringToSearch, recipes, ingredients) {
+    console.log(recipes[0], ingredients[0])
     const matchingRecipes = recipes.filter(recipe => {
-      console.log(recipe.name, stringToSearch)
       return recipe.name.toLowerCase().includes(stringToSearch.toLowerCase())
         // || recipe.ingredients.forEach(recipeIngredient => {
         //   return ingredients.find(ingredient => ingredient.id === recipeIngredient.id)

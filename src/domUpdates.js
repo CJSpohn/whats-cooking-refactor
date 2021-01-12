@@ -23,7 +23,7 @@ let domUpdates = {
     if (!dataset.length) {
       return errorMessage.innerText = error
     } else {
-      this.displayPage(user, dataset, cardArea, error, selector)
+      this.displayPage(user, dataset, cardArea, selector)
     }
   },
 
@@ -39,7 +39,7 @@ let domUpdates = {
     return { error, selector }
   },
 
-  displayPage(user, dataset, cardArea, error, selector) {
+  displayPage(user, dataset, cardArea, selector) {
     this.hideChefLogos();
     document.querySelector(selector).classList.remove('hidden');
     cardArea.innerHTML = '';
