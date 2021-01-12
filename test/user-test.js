@@ -53,20 +53,20 @@ describe('User', () => {
   it('should be able to filter through recipesToCook by tag', () => {
     user1.saveRecipe(recipeData[1], 'recipesToCook');
     user1.saveRecipe(recipeData[2], 'recipesToCook');
-    expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
+    expect(user1.filterRecipesToCook('lunch')).to.eql([recipeData[1]]);
   });
 
   it('should be able to search saved recipes by ingredient', () => {
-    user1.addToFavorites(recipeData[0]);
-    user1.addToFavorites(recipeData[1]);
-    expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
+    user1.saveRecipe(recipeData[5], 'favoriteRecipes');
+    user1.saveRecipe(recipeData[3], 'recipesToCook');
+    expect(user1.filterFavorites('side dish')).to.eql([recipeData[5]]);
   });
 
   it('should be able to check ingredients in User/s pantry for a given recipe', () => {
-    expect(user1.checkPantry(recipeIngredients)).to.eql('You have the ingredients!');
+    expect(user1.checkPantry(recipeData[1)).to.eql('You have the ingredients!');//replace index with pantry list?
   });
 
   it('should inform User if they lack required ingredients for a given recipe', () => {
-    expect(user1.checkPantry(recipeIngredients)).to.eql(missingIngredientsWithPrice);
+    expect(user1.checkPantry(recipeData[2])).to.eql(missingIngredientsWithPrice);//replace answer with ingredient list and price
   });
 });

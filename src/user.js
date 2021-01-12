@@ -24,6 +24,8 @@ class User {
     });
   }
 
+  //filterRecipesToCook by type?
+
   findRecipes(strgToSrch) {
     return this.favoriteRecipes.filter(recipe => {
       return recipe.name.includes(strgToSrch)
@@ -31,6 +33,11 @@ class User {
         return ingredient.name.includes(strgToSrch)
       });
     });
+  }
+
+  checkPantry(recipe) {
+    //if ingredients are in user pantry, return "You have the ingredients!"
+    //if pantry ingredients are missing, return missingIngredientsWithPrice
   }
 }
 
