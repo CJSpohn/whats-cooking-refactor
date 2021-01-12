@@ -4,28 +4,22 @@ let domUpdates = {
 
   greetUser(user) {
     const userName = document.querySelector('.user-name');
-    userName.innerHTML =
-    user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+    const name = user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+    userName.innerHTML = name;
   },
 
-  applyFavorites(user) {
+  applyIconStatus(user) {
     const favoriteIds = user.favoriteRecipes.map(recipe => recipe.id);
+    const cookbookIds = user.recipesToCook.map(recipe => recipe.id);
     const allCards = document.querySelectorAll('.card');
     allCards.forEach(card => {
       if (favoriteIds.includes(+card.id)) {
         document.querySelector(`.favorite${card.id}`).classList.add('favorite-active');
-      }
-    })
-  },
-
-  applyCookbook(user) {
-    const cookbookIds = user.recipesToCook.map(recipe => recipe.id);
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach(card => {
+      };
       if (cookbookIds.includes(+card.id)) {
         document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
       }
-    })
+    });
   },
 
   populateCards(cardArea, cookbook, user) {
@@ -55,8 +49,7 @@ let domUpdates = {
         <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
       </div>`)
     });
-    this.applyFavorites(user);
-    this.applyCookbook(user);
+    this.applyIconStatus(user);
   },
 
   hideChefLogo() {
