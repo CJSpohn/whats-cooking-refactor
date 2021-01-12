@@ -44,14 +44,16 @@ describe('User', () => {
     expect(user1.recipesToCook).to.eql([]);
   })
 
-  it('should be able to filter through favoriteRecipes by type', () => {
+  it('should be able to filter through favoriteRecipes by tag', () => {
     user1.saveRecipe(recipeData[0], 'favoriteRecipes');
     user1.saveRecipe(recipeData[1], 'favoriteRecipes');
     expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
   });
 
-  it('should be able to filter through recipesToCook by type', () => {
-
+  it('should be able to filter through recipesToCook by tag', () => {
+    user1.saveRecipe(recipeData[1], 'recipesToCook');
+    user1.saveRecipe(recipeData[2], 'recipesToCook');
+    expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
   });
 
   it('should be able to search saved recipes by ingredient', () => {

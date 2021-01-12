@@ -18,9 +18,9 @@ class User {
     this[category].splice(i, 1)
   }
 
-  filterFavorites(type) {
+  filterFavorites(tag) {
     return this.favoriteRecipes.filter(recipe => {
-      return recipe.tags.includes(type);
+      return recipe.tags.includes(tag);
     });
   }
 
