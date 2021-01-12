@@ -24,15 +24,15 @@ class User {
     });
   }
 
-  //filterRecipesToCook by type?
-
-  findRecipes(strgToSrch) {
-    return this.favoriteRecipes.filter(recipe => {
-      return recipe.name.includes(strgToSrch)
-      || recipe.ingredients.find(ingredient => {
-        return ingredient.name.includes(strgToSrch)
-      });
-    });
+  findRecipes(stringToSearch, recipes, ingredients) {
+    console.log(recipes[0], ingredients[0])
+    const matchingRecipes = recipes.filter(recipe => {
+      return recipe.name.toLowerCase().includes(stringToSearch.toLowerCase())
+        // || recipe.ingredients.forEach(recipeIngredient => {
+        //   return ingredients.find(ingredient => ingredient.id === recipeIngredient.id)
+        // })
+    })
+    return matchingRecipes
   }
 
   checkPantry(recipe) {

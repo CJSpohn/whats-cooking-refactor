@@ -12,6 +12,7 @@ const favButton = document.querySelector('.view-favorites');
 const cookbookButton = document.querySelector('.view-cookbook');
 const homeButton = document.querySelector('.home')
 const cardArea = document.querySelector('.all-cards');
+const searchInput = document.querySelector('.search-input');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -37,7 +38,7 @@ const getData = () => {
       cookbook = new Cookbook(dataset[1]);
       ingredients = dataset[2];
       domUpdates.greetUser(user);
-      domUpdates.populateCards(cardArea, cookbook, user);
+      domUpdates.drawCards(cookbook.recipes, cardArea, user);
     });
 }
 
@@ -51,11 +52,14 @@ homeButton.addEventListener('click', () => {
   domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
 });
 favButton.addEventListener('click', () => {
-  domUpdates.viewFavorites(user, favButton, cardArea, cookbook)
+  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients)
+  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.viewCookbook(user, cookbookButton, cardArea, cookbook);
+  domUpdates.changePage(event, user, user.recipesToCook, cardArea);
+})
+searchInput.addEventListener('keyup', () => {
+  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
 })

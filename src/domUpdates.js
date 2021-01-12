@@ -4,44 +4,60 @@ let domUpdates = {
 
   greetUser(user) {
     const userName = document.querySelector('.user-name');
-    userName.innerHTML =
-    user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+    const name = user.name.split(' ')[0] + ' ' + user.name.split(' ')[1][0];
+    userName.innerHTML = name;
   },
 
-  applyFavorites(user) {
-    const favoriteIds = user.favoriteRecipes.map(recipe => recipe.id);
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach(card => {
-      if (favoriteIds.includes(+card.id)) {
-        document.querySelector(`.favorite${card.id}`).classList.add('favorite-active');
-      }
-    })
-  },
-
-  applyCookbook(user) {
-    const cookbookIds = user.recipesToCook.map(recipe => recipe.id);
-    const allCards = document.querySelectorAll('.card');
-    allCards.forEach(card => {
-      if (cookbookIds.includes(+card.id)) {
-        document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
-      }
-    })
-  },
-
-  populateCards(cardArea, cookbook, user) {
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
-    }
+  //NAV BUTTONS
+  goToHome(cardArea, cookbook, user) {
+    this.hideChefLogos();
+    document.querySelector('.home-cl').classList.remove('hidden');
+    document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
   },
 
-  goToHome(cardArea, cookbook, user, favButton, cookbookButton) {
-    this.hideChefLogo();
-    document.querySelector('.home-cl').classList.remove('hidden');
-    document.querySelector('.error-message').innerText = '';
-    this.populateCards(cardArea, cookbook, user);
+  changePage(event, user, dataset, cardArea) {
+    const classList = event.target.classList
+    const errorMessage = document.querySelector('.error-message');
+    const { error, selector } = this.determinePage(classList);
+    if (!dataset.length) {
+      return errorMessage.innerText = error
+    } else {
+      this.displayPage(user, dataset, cardArea, selector)
+    }
   },
 
+  determinePage(classList) {
+    let error, selector;
+    if (classList.contains('view-favorites')) {
+      error = 'You have no favorites!';
+      selector = '.fav-cl';
+    } else if (classList.contains('view-cookbook')) {
+      error = 'Your cookbook is empty!';
+      selector = '.cook-cl';
+    }
+    return { error, selector }
+  },
+
+  displayPage(user, dataset, cardArea, selector) {
+    this.hideChefLogos();
+    document.querySelector(selector).classList.remove('hidden');
+    cardArea.innerHTML = '';
+    this.drawCards(dataset, cardArea, user)
+  },
+
+  hideChefLogos() {
+    const chefLogos = document.querySelectorAll('.chef-logo');
+    chefLogos.forEach(logo => {
+      logo.classList.add('hidden');
+    })
+  },
+
+  clearError() {
+    document.querySelector('.error-message').innerText = '';
+  },
+
+  //CARD DISPLAY
   drawCards(data, cardArea, user) {
     cardArea.innerHTML = '';
     data.forEach(recipe => {
@@ -55,57 +71,65 @@ let domUpdates = {
         <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
       </div>`)
     });
-    this.applyFavorites(user);
-    this.applyCookbook(user);
+    this.applyIconStatus(user);
   },
 
-  hideChefLogo() {
-    const chefLogos = document.querySelectorAll('.chef-logo');
-    chefLogos.forEach(logo => {
-      logo.classList.add('hidden');
-    })
+  applyIconStatus(user) {
+    const favoriteIds = user.favoriteRecipes.map(recipe => recipe.id);
+    const cookbookIds = user.recipesToCook.map(recipe => recipe.id);
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(card => {
+      if (favoriteIds.includes(+card.id)) {
+        document.querySelector(`.favorite${card.id}`).classList.add('favorite-active');
+      };
+      if (cookbookIds.includes(+card.id)) {
+        document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
+      };
+    });
   },
 
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event, cookbookButton, ingredients) {
+  //CARD BUTTONS
+  cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients) {
     if (event.target.classList.contains('favorite')) {
-      this.updateFavoriteStatus(user, cardArea, favButton, cookbook, event);
+      this.updateButtonStatus(user, cardArea, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
       this.displayDirections(event, cookbook, ingredients, cardArea);
     } else if (event.target.classList.contains('add-button')) {
-      this.updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event)
+      this.updateButtonStatus(user, cardArea, cookbook, event)
     }
   },
 
-  viewFavorites(user, favButton, cardArea, cookbook) {
-    const errorMessage = document.querySelector('.error-message');
-    errorMessage.innerText = '';
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
-    }
-    if (!user.favoriteRecipes.length) {
-      errorMessage.innerText = 'You have no favorites!';
-      return
+  updateButtonStatus(user, cardArea, cookbook, event) {
+    const { dataset, selector, active } = this.determineButton(event);
+    const specificRecipe = this.getRecipe(cookbook, event);
+    if (!event.target.classList.contains(active)) {
+      user.saveRecipe(specificRecipe, dataset);
+      this.clearError();
     } else {
-      this.hideChefLogo();
-      document.querySelector('.fav-cl').classList.remove('hidden');
-      cardArea.innerHTML = '';
-      this.drawCards(user.favoriteRecipes, cardArea, user)
+      user.removeRecipe(specificRecipe, dataset);
+      this.applyLiveChangeToPage(selector, dataset, cardArea, user);
     }
+    event.target.classList.toggle(active);
   },
 
-  viewCookbook(user, cookbookButton, cardArea, cookbook) {
-    const errorMessage = document.querySelector('.error-message');
-    errorMessage.innerText = '';
-    if (cardArea.classList.contains('all')) {
-      cardArea.classList.remove('all')
+  determineButton(event) {
+    let dataset, selector, active;
+    if (event.target.classList.contains('add-button')) {
+      dataset = 'recipesToCook';
+      selector = '.cook-cl';
+      active = 'cookbook-active';
+    } else if (event.target.classList.contains('favorite')) {
+      dataset = 'favoriteRecipes';
+      selector = '.fav-cl';
+      active = 'favorite-active';
     }
-    if (!user.recipesToCook.length) {
-      errorMessage.innerText = 'Your cookbook is empty!'
-      return
-    } else {
-      this.hideChefLogo();
-      document.querySelector('.cook-cl').classList.remove('hidden');
-      this.drawCards(user.recipesToCook, cardArea, user)
+    return { dataset, selector, active };
+  },
+
+  applyLiveChangeToPage(selector, dataset, cardArea, user) {
+    const chefLogo = document.querySelector(selector);
+    if (!chefLogo.classList.contains('hidden')) {
+      this.drawCards(user[dataset], cardArea, user);
     }
   },
 
@@ -117,50 +141,20 @@ let domUpdates = {
     })
   },
 
-  updateCookbookStatus(user, cardArea, cookbookButton, cookbook, event) {
-    let specificRecipe = this.getRecipe(cookbook, event);
-    if (!event.target.classList.contains('cookbook-active')) {
-      event.target.classList.add('cookbook-active');
-      document.querySelector('.error-message').innerText = '';
-      user.saveRecipe(specificRecipe, 'recipesToCook');
-    } else {
-      event.target.classList.remove('cookbook-active');
-      user.removeRecipe(specificRecipe, 'recipesToCook')
-      const chefLogo = document.querySelector('.cook-cl');
-      if (!chefLogo.classList.contains('hidden')) {
-        this.drawCards(user.recipesToCook, cardArea, user);
-      }
-    }
-  },
-
-  updateFavoriteStatus(user, cardArea, favButton, cookbook, event) {
-    let specificRecipe = this.getRecipe(cookbook, event);
-    if (!event.target.classList.contains('favorite-active')) {
-      event.target.classList.add('favorite-active');
-      document.querySelector('.error-message').innerText = '';
-      user.saveRecipe(specificRecipe, 'favoriteRecipes');
-    } else {
-      event.target.classList.remove('favorite-active');
-      user.removeRecipe(specificRecipe, 'favoriteRecipes');
-      const chefLogo = document.querySelector('.fav-cl');
-      if (!chefLogo.classList.contains('hidden')) {
-        this.drawCards(user.favoriteRecipes, cardArea, user);
-      }
-    }
-  },
-
+  //RECIPE INFORMATION
   displayDirections(event, cookbook, ingredients, cardArea) {
-    let newRecipeInfo = cookbook.recipes.find(recipe => {
-      if (recipe.id === Number(event.target.id)) {
-        return recipe;
-      }
-    })
+    let newRecipeInfo = this.getRecipe(cookbook, event);
     let currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
-    let ingredientsUsed = recipeInformation.ingredientsUsed;
     let costInDollars = (cost / 100).toFixed(2);
-    cardArea.classList.add('all');
+    let ingredientsUsed = recipeInformation.ingredientsUsed;
+    this.showRecipeInformation(cardArea, currentRecipe, costInDollars);
+    this.populateIngredients(currentRecipe, ingredientsUsed);
+    this.populateInstructions(currentRecipe);
+  },
+
+  showRecipeInformation(cardArea, currentRecipe, costInDollars) {
     cardArea.innerHTML = `
     <div class="recipe-container">
     <h2 class="recipe-heading">${currentRecipe.name}</h2>
@@ -172,21 +166,32 @@ let domUpdates = {
       </section>
     </div>
     `;
-    let ingredientsSpan = document.querySelector('.ingredients'); // change to ingredientsDisplay
-    let instructionsSpan = document.querySelector('.instructions'); // changed to ingredientsInstructions
+  },
+
+  populateIngredients(currentRecipe, ingredientsUsed) {
+    let ingredientsDisplay = document.querySelector('.ingredients');
     currentRecipe.ingredients.forEach((ingredient, index) => {
-      ingredientsSpan.insertAdjacentHTML('afterbegin', `
+      ingredientsDisplay.insertAdjacentHTML('afterbegin', `
       <ul>
         <li>${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
         ${ingredientsUsed[index]}</li>
       </ul>
       `)
     })
+  },
+
+  populateInstructions(currentRecipe) {
+    let ingredientsInstructions = document.querySelector('.instructions');
     currentRecipe.instructions.forEach(instruction => {
-      instructionsSpan.insertAdjacentHTML('beforebegin', `
+      ingredientsInstructions.insertAdjacentHTML('beforebegin', `
       <li>${instruction.instruction}</li>
       `)
     })
+  },
+
+  searchRecipesByNameOrIngredient(user, string, recipes, ingredients, cardArea) {
+    const matchingRecipes = user.findRecipes(string, recipes, ingredients);
+    this.drawCards(matchingRecipes, cardArea, user)
   }
 }
 
