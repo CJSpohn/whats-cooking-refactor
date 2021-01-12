@@ -18,6 +18,7 @@ let domUpdates = {
   },
 
   changePage(event, user, dataset, cardArea, pantry, ingredients) {
+    this.hideRecipeDetails();
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
@@ -26,7 +27,6 @@ let domUpdates = {
     } else {
       this.displayPage(user, dataset, cardArea, selector, pantry, ingredients)
     }
-    this.hideRecipeDetails();
   },
 
   determinePage(classList) {
@@ -49,22 +49,23 @@ let domUpdates = {
     document.querySelector(selector).classList.remove('hidden');
     cardArea.innerHTML = '';
     if (selector === '.pantry-cl') {
-      // call pantry method
-      pantry.displayPantry(ingredients);
+      let itemsInPantry = pantry.getPantry(ingredients);
+      this.displayPantry(itemsInPantry);
     } else {
       this.drawCards(dataset, cardArea, user);
     }
   },
 
-  // displayPantry(user) {
-  //   let pantryDisplay = document.querySelector('.ingredients-list');
-  //     user.pantry.forEach(item => {
-  //       console.log(item);
-  //       pantryDisplay.innerHTML += `
-  //         <p>${item.name}: ${item.amount}</p>
-  //       `
-  //     })
-  // },
+  displayPantry(itemsInPantry) {
+    let pantryDisplay = document.querySelector('.ingredients-list');
+    pantryDisplay.innerHTML += `
+      <h2 class="recipe-heading">Items in Pantry</h2>`
+    itemsInPantry.forEach(item => {
+      pantryDisplay.innerHTML += `
+          <p class="pantry-list">${item.name}: ${item.amount}</p>
+        `
+    })
+  },
 
   hideRecipeDetails() {
     let missingIngredientsSection = document.querySelector('.ingredients-list');

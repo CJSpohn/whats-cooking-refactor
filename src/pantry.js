@@ -22,13 +22,12 @@ class Pantry {
     return ingredientsNeeded;
   }
 
-  displayPantry(ingredients) {
+  getPantry(ingredients) {
     let pantryIngredients = [];
     this.contents.forEach(item => {
       let currentIngredient = ingredients.find(ingredient => ingredient.id === item.ingredient)
-      pantryIngredients.push({[currentIngredient.name]: item.amount})
+      pantryIngredients.push({name: currentIngredient.name, amount: item.amount})
     })
-    console.log(pantryIngredients)
     return pantryIngredients;
   }
 }
