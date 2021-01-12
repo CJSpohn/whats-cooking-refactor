@@ -6,6 +6,7 @@ html {
 
 body {
   box-sizing: border-box;
+  color: $mainTextColor;
   font-family: 'Open Sans', sans-serif;
   margin: auto;
 }
@@ -45,8 +46,11 @@ body {
 
 .nav-button {
   background-color: $headerColor;
+  border-radius: 1vh;
   font-size: 130%;
   margin: 1%;
+  padding: 2%;
+  display: flex;
   &:hover {
     background-color: $buttonHover;
   };
@@ -56,6 +60,7 @@ body {
 }
 
 h1 {
+  color: $headingTextColor;
   font-size: 255%;
   margin-top: 0;
   margin-bottom: 0;
@@ -167,14 +172,16 @@ img {
 
 .card {
   background-color: $cardColor;
-  border: 3px solid $borderColor;
+  // border: 3px solid $borderColor;
+  border-radius: 2vh;
+  padding: 2%;
   width: 100%;
 }
 
 
 .card-header {
-  background-color: $headerColor;
-  border-bottom: 1px solid $borderColor;
+  // background-color: $borderColor;
+  // border-bottom: 1px solid $borderColor;
   display: flex;
   justify-content: space-between;
 }
