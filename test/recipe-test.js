@@ -24,7 +24,7 @@ describe('Recipe', () => {
   })
 
   it('should be able to calculate the cost of its ingredients', () => {
-    expect(recipe.calculateCostAndIngredients()).to.equal({4166, (recipeData[4].ingredients)});
+    expect(recipe.calculateCostAndIngredients()).to.equal(4666);
   });
 });
-//add cost 
+//add cost and ingredients object
