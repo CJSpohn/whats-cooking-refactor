@@ -162,15 +162,18 @@ let domUpdates = {
     let costInDollars = (cost / 100).toFixed(2);
     cardArea.classList.add('all');
     cardArea.innerHTML = `
-    <h3>${currentRecipe.name}</h3>
-      <p class='all-recipe-info'><strong>It will cost: </strong>
-      <span class='cost recipe-info'>$${costInDollars}</span><br><br>
-      <strong>You will need: </strong><span class='ingredients recipe-info'></span>
-      <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
-      </span></ol>
-      </p>`;
-    let ingredientsSpan = document.querySelector('.ingredients');
-    let instructionsSpan = document.querySelector('.instructions');
+    <div class="recipe-container">
+    <h3 class="recipe-heading">${currentRecipe.name}</h3>
+      <section class="all-recipe-info">
+        <p class="cost recipe-info">It will cost: $${costInDollars}</p>
+        <p class="ingredients recipe-info">You will need:</p> 
+        <p class="instructions recipe-info">Instructions:<p>
+        <ol></ol>
+      </section>
+    </div>
+    `;
+    let ingredientsSpan = document.querySelector('.ingredients'); // change to ingredientsDisplay
+    let instructionsSpan = document.querySelector('.instructions'); // changed to ingredientsInstructions
     currentRecipe.ingredients.forEach((ingredient, index) => {
       ingredientsSpan.insertAdjacentHTML('afterbegin', `
       <ul>
