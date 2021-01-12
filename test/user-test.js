@@ -2,6 +2,7 @@ import { expect } from 'chai';
 
 import User from '../src/user.js';
 import recipeData from '../src/data/data/recipes.js'
+// import Recipe from '../src/recipe.js';
 
 let user1
 
@@ -25,11 +26,13 @@ describe('User', () => {
 
   it('should be able to add recipes to favoriteRecipes', () => {
     user1.saveRecipe(recipeData[0], favoriteRecipes);
+    console.log(favoriteRecipes)
     expect(user1.favoriteRecipes.includes(recipeData[0])).to.eql(true);
   });
 
   it('should be able to add recipes to recipesToCook', () => {
-
+    user1.saveRecipe(recipeData[1], recipesToCook);
+    expect(user1.recipesToCook.includes(recipeData[1])).to.eql(true);
   });
 
   it('should be able to remove recipes from favoriteRecipes', () => {
