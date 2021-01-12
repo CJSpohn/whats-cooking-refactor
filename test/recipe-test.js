@@ -9,24 +9,22 @@ let recipe;
 describe('Recipe', () => {
   beforeEach(() => {
 
-    recipe = new Recipe(recipeData[47], ingredientsData);
+    recipe = new Recipe(recipeData[4], ingredientsData);
   });
 
   describe('Recipe Data', () => {
 
     it('should have a list of ingredients', () => {
-      expect(recipe.ingredients).to.equal(recipeData[47].ingredients);
+      expect(recipe.ingredients).to.equal(recipeData[4].ingredients);
     })
 
     it('should have a type or tag to search', () => {
-      expect(recipe.instructions).to.equal(recipeData[47].instructions);
+      expect(recipe.instructions).to.equal(recipeData[4].instructions);
     })
   })
 
   it('should be able to calculate the cost of its ingredients', () => {
-    expect(recipe.calculateCost()).to.equal(4166);
-  });
-  it('should be able to access instructions for a recipe', () => {
-
+    expect(recipe.calculateCostAndIngredients()).to.equal({4166, (recipeData[4].ingredients)});
   });
 });
+//add cost 
