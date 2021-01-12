@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import User from '../src/user.js';
-import recipeData from '../src/data/recipes.js'
+import recipeData from '../src/data/data/recipes.js'
 
 let user1
 
@@ -23,43 +23,51 @@ describe('User', () => {
     );
   });
 
-  it('Should have a property of favoriteRecipes with a default value', () => {
-    expect(user1.favoriteRecipes).to.eql([]);
-  });
-
-  it('Should be able to add recipes to favoriteRecipes', () =>{
-    user1.addToFavorites(recipeData[0])
+  it('should be able to add recipes to favoriteRecipes', () => {
+    user1.saveRecipe(recipeData[0], 'favoriteRecipes');
     expect(user1.favoriteRecipes.includes(recipeData[0])).to.eql(true);
   });
 
-  it('Should be able to remove recipes from favoriteRecipes', () =>{
-    user1.removeFromFavorites(recipeData);
+  it('should be able to add recipes to recipesToCook', () => {
+    user1.saveRecipe(recipeData[1], 'recipesToCook');
+    expect(user1.recipesToCook.includes(recipeData[1])).to.eql(true);
+  });
+
+  it('should be able to remove recipes from favoriteRecipes', () => {
+    user1.removeRecipe(recipeData, 'favoriteRecipes');
     expect(user1.favoriteRecipes).to.eql([]);
   });
 
-  it('Should be able to filter through favoriteRecipes by tag', () => {
-    user1.addToFavorites(recipeData[0]);
-    user1.addToFavorites(recipeData[1]);
+  it('should be able to remove recipes from recipesToCook', () => {
+    user1.removeRecipe(recipeData, 'recipesToCook');
+    expect(user1.recipesToCook).to.eql([]);
+  })
+
+  it('should be able to filter through favoriteRecipes by tag', () => {
+    user1.saveRecipe(recipeData[0], 'favoriteRecipes');
+    user1.saveRecipe(recipeData[1], 'favoriteRecipes');
     expect(user1.filterFavorites('antipasti')).to.eql([recipeData[0]]);
   });
 
-  it('Should be able to search favoriteRecipes by ingredient', () => {
-    user1.addToFavorites(recipeData[0]);
-    user1.addToFavorites(recipeData[1]);
-    expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
+  it('should be able to filter through recipesToCook by tag', () => {
+    user1.saveRecipe(recipeData[1], 'recipesToCook');
+    user1.saveRecipe(recipeData[2], 'recipesToCook');
+    expect(user1.filterRecipesToCook('lunch')).to.eql([recipeData[1]]);
   });
 
-  // it('Should be able to search favoriteRecipes by name', () => {
-  //   user1.addToFavorites(recipeData[0]);
-  //   user1.addToFavorites(recipeData[1]);
-  //   expect(user1.findFavorites('egg')).to.eql([recipeData[0]]);
-  // });
-
-  it('Should be able to check ingredients in User/s pantry for a given recipe', () => {
-    expect(user1.checkPantry(recipeIngredients)).to.eql('You have the ingredients!');
+  it('should be able to search saved recipes by ingredient', () => {
+    user1.saveRecipe(recipeData[5], 'favoriteRecipes');
+    user1.saveRecipe(recipeData[3], 'recipesToCook');
+    expect(user1.filterFavorites('side dish')).to.eql([recipeData[5]]);
   });
 
-  it('Should inform User if they lack required ingredients for a given recipe', () => {
-    expect(user1.checkPantry(recipeIngredients)).to.eql(missingIngredientsWithPrice);
+  it('should be able to check ingredients in User/s pantry for a given recipe', () => {
+    expect(user1.checkPantry(recipeData[1])).to.eql('You have the ingredients!');
+  });
+
+  it('should inform User if they lack required ingredients for a given recipe', () => {
+    expect(user1.checkPantry(recipeData[2])).to.eql(missingIngredientsWithPrice);
   });
 });
+//replace index with pantry list?
+//replace answer with ingredient list and price

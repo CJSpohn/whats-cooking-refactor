@@ -34,7 +34,11 @@ class User {
     })
     return matchingRecipes
   }
+
+  checkPantry(recipe) {
+    //if ingredients are in user pantry, return "You have the ingredients!"
+    //if pantry ingredients are missing, return missingIngredientsWithPrice
+  }
 }
 
-
-export default User;
+module.exports = User;

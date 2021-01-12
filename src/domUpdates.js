@@ -63,12 +63,12 @@ let domUpdates = {
     data.forEach(recipe => {
       cardArea.insertAdjacentHTML('afterbegin', `
       <div id='${recipe.id}' class='card'>
-      <header id='${recipe.id}' class='card-header'>
-      <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'></button>
-      <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
-      </header>
-      <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
-      <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
+        <header id='${recipe.id}' class='card-header'>
+          <button id='${recipe.id}' aria-label='add-button' class='add-button cookbook${recipe.id} card-button'></button>
+          <button id='${recipe.id}' aria-label='favorite-button' class='favorite favorite${recipe.id} card-button'></button>
+        </header>
+        <img id='${recipe.id}' tabindex='0' class='card-picture' src='${recipe.image}' alt='click to view recipe for ${recipe.name}'>
+        <p id='${recipe.id}' class='recipe-name'>${recipe.name}</p>
       </div>`)
     });
     this.applyIconStatus(user);
@@ -156,19 +156,22 @@ let domUpdates = {
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
     cardArea.innerHTML = `
-    <h3>${currentRecipe.name}</h3>
-      <p class='all-recipe-info'><strong>It will cost: </strong>
-      <span class='cost recipe-info'>$${costInDollars}</span><br><br>
-      <strong>You will need: </strong><span class='ingredients recipe-info'></span>
-      <strong>Instructions: </strong><ol><span class='instructions recipe-info'>
-      </span></ol>
-      </p>`;
+    <div class="recipe-container">
+    <h2 class="recipe-heading">${currentRecipe.name}</h2>
+      <section class="all-recipe-info">
+        <p class="cost recipe-info">It will cost: $${costInDollars}</p>
+        <p class="ingredients recipe-info">You will need:</p> 
+        <p class="instructions recipe-info">Instructions:<p>
+        <ol></ol>
+      </section>
+    </div>
+    `;
   },
 
   populateIngredients(currentRecipe, ingredientsUsed) {
-    let ingredientsSpan = document.querySelector('.ingredients');
+    let ingredientsDisplay = document.querySelector('.ingredients');
     currentRecipe.ingredients.forEach((ingredient, index) => {
-      ingredientsSpan.insertAdjacentHTML('afterbegin', `
+      ingredientsDisplay.insertAdjacentHTML('afterbegin', `
       <ul>
         <li>${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
         ${ingredientsUsed[index]}</li>
@@ -178,9 +181,9 @@ let domUpdates = {
   },
 
   populateInstructions(currentRecipe) {
-    let instructionsSpan = document.querySelector('.instructions');
+    let ingredientsInstructions = document.querySelector('.instructions');
     currentRecipe.instructions.forEach(instruction => {
-      instructionsSpan.insertAdjacentHTML('beforebegin', `
+      ingredientsInstructions.insertAdjacentHTML('beforebegin', `
       <li>${instruction.instruction}</li>
       `)
     })
