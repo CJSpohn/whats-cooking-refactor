@@ -24,15 +24,20 @@ class User {
     });
   }
 
-  findRecipes(stringToSearch, recipes, ingredients) {
-    const matchingRecipes = recipes.filter(recipe => {
+  findRecipes(stringToSearch, recipes, category) {
+    let matchingRecipesByName = recipes.filter(recipe => {
       return recipe.name.toLowerCase().includes(stringToSearch.toLowerCase())
-        // || recipe.ingredients.forEach(recipeIngredient => {
-        //   return ingredients.find(ingredient => ingredient.id === recipeIngredient.id)
-        // })
     })
-    return matchingRecipes
+    if (category !== '') {
+      let recipesStored = this[category].map(item => +item.id);
+      const matchingRecipesOnPage = matchingRecipesByName.filter(recipe => {
+        return recipesStored.includes(recipe.id)
+      })
+      return matchingRecipesOnPage
+    }
+    return matchingRecipesByName
   }
+
 }
 
 export default User;

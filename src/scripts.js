@@ -96,6 +96,7 @@ const updatePantry = () => {
 const goToHome = () => {
   domUpdates.hideChefLogos();
   domUpdates.hideSuccessMessage();
+  domUpdates.revealSearchBar()
   document.querySelector('.home-cl').classList.remove('hidden');
   document.querySelector('.error-message').innerText = '';
   domUpdates.drawCards(cookbook.recipes, cardArea, user);
@@ -139,8 +140,16 @@ const cardButtonConditionals = (event) => {
 }
 
 const searchRecipesByNameOrIngredient = (string) => {
-  const matchingRecipes = user.findRecipes(string, cookbook.recipes, ingredients);
-  domUpdates.drawCards(matchingRecipes, cardArea, user)
+  let dataset = '';
+  const favChef = document.querySelector('.fav-cl');
+  const cookChef = document.querySelector('.cook-cl');
+  if (!favChef.classList.contains('hidden')) {
+    dataset = 'favoriteRecipes';
+  } else if (!cookChef.classList.contains('hidden')) {
+    dataset = 'recipesToCook';
+  }
+  const matchingRecipes = user.findRecipes(string, cookbook.recipes, dataset);
+  domUpdates.drawCards(matchingRecipes, cardArea, user);
 }
 
 window.onload = onStartup();
@@ -160,6 +169,4 @@ searchInput.addEventListener('keyup', () => {
 pantryButton.addEventListener('click', () => {
   changePage(event, pantry.contents)
 });
-cookButton.addEventListener('click', () => {
-  updatePantry()
-});
+cookButton.addEventListener('click', updatePantry);

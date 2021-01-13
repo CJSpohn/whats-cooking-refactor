@@ -8,17 +8,28 @@ let domUpdates = {
     userName.innerHTML = name;
   },
 
+  hideSearchBar() {
+    document.querySelector('.search-bar').classList.add('hidden')
+  },
+
+  revealSearchBar() {
+    document.querySelector('.search-bar').classList.remove('hidden')
+  },
+
   //NAV BUTTONS
   determinePage(classList) {
     let error, selector;
     if (classList.contains('view-favorites')) {
+      this.revealSearchBar();
       error = 'You have no favorites!';
       selector = '.fav-cl';
     } else if (classList.contains('view-cookbook')) {
+      this.revealSearchBar();
       error = 'Your cookbook is empty!';
       selector = '.cook-cl';
     } else if (classList.contains('view-pantry')) {
       document.querySelector('.error-message').innerText = '';
+      this.hideSearchBar();
       selector = '.pantry-cl';
     }
     return { error, selector }
@@ -211,12 +222,8 @@ let domUpdates = {
       <li>${instruction.instruction}</li>
       `
     })
-  },
-
-  searchRecipesByNameOrIngredient(user, string, recipes, ingredients, cardArea) {
-    const matchingRecipes = user.findRecipes(string, recipes, ingredients);
-    this.drawCards(matchingRecipes, cardArea, user)
   }
+
 }
 
 export default domUpdates;
