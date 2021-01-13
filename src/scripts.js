@@ -26,6 +26,19 @@ const instantiateUser = (usersData) => {
   pantry = new Pantry(newUser.pantry);
 }
 
+const updateUserPantry = (currentUserId, allUsers) => {
+  const activeUser = allUsers.find(user => user.id === currentUserId);
+  pantry = new Pantry(activeUser.pantry)
+}
+
+const updateUserData = () => {
+  fetch('http://localhost:3001/api/v1/users')
+  .then(res => res.json())
+  .then(data => updateUserPantry(user.id, data))
+  .catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
+}
+
+
 const getData = () => {
   let usersPromise = fetch('http://localhost:3001/api/v1/users')
     .then(res => res.json());
@@ -41,26 +54,22 @@ const getData = () => {
       ingredients = dataset[2];
       domUpdates.greetUser(user);
       domUpdates.drawCards(cookbook.recipes, cardArea, user);
-    });
+    }).catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
 }
 
-const postData = (ingredientsToRemove) => {
-  let ingredientPromises = [];
+const postData = (ingredientToRemove) => {
   let body = {
     userID: +`${user.id}`,
-    ingredientID: +`${ingredientsToRemove[0].id}`,
-    ingredientModification: -`${ingredientsToRemove[0].amount}`
+    ingredientID: +`${ingredientToRemove.id}`,
+    ingredientModification: -`${ingredientToRemove.amount}`
   };
-  console.log(body)
-  // ingredientsToRemove.forEach(ingredient => {
-
-    ingredientPromises.push(fetch('http://localhost:3001/api/v1/users', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    }).then(res => res.text()).then(data => console.log(data)).catch(error => console.log(error)))
-
-  // })
+  return fetch('http://localhost:3001/api/v1/users',
+    {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+    }
+  )
 }
 
 const onStartup = () => {
@@ -70,10 +79,18 @@ const onStartup = () => {
 const updatePantry = () => {
   let recipeId = document.querySelector('.ingredients').id;
   let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
-  console.log(recipeDisplayed)
   const currentRecipe = new Recipe(recipeDisplayed, ingredients);
   const itemsToRemove = pantry.findItemsToRemove(currentRecipe);
-  postData(itemsToRemove);
+  Promise.all(itemsToRemove.map(item => postData(item)))
+    .then(response => {
+      return Promise.all(response.map(res => res.json()))
+    })
+    .then(data => {
+      domUpdates.showSuccessMessage('Your pantry has been updated!')
+      updateUserData();
+    })
+    .catch(err => domUpdates.showSuccessMessage('You don\'t have enough ingredients!'))
+  domUpdates.hideCookButton();
 }
 
 window.onload = onStartup();
