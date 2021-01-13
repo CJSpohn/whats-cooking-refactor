@@ -191,6 +191,7 @@ let domUpdates = {
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
+    this.hideSearchBar();
     let recipeArea = document.querySelector('.recipe-area')
     recipeArea.innerHTML += `
       <h2 class="recipe-heading">${currentRecipe.name}</h2>
