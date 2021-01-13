@@ -44,23 +44,19 @@ const getData = () => {
     });
 }
 
-const postData = (ingredientsToRemove) => {
-  let ingredientPromises = [];
+const postData = (ingredientToRemove) => {
   let body = {
     userID: +`${user.id}`,
-    ingredientID: +`${ingredientsToRemove[0].id}`,
-    ingredientModification: -`${ingredientsToRemove[0].amount}`
+    ingredientID: +`${ingredientToRemove.id}`,
+    ingredientModification: -`${ingredientToRemove.amount}`
   };
-  console.log(body)
-  // ingredientsToRemove.forEach(ingredient => {
-
-    ingredientPromises.push(fetch('http://localhost:3001/api/v1/users', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
-    }).then(res => res.text()).then(data => console.log(data)).catch(error => console.log(error)))
-
-  // })
+  return fetch('http://localhost:3001/api/v1/users',
+    {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+    }
+  )
 }
 
 const onStartup = () => {
@@ -70,10 +66,16 @@ const onStartup = () => {
 const updatePantry = () => {
   let recipeId = document.querySelector('.ingredients').id;
   let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
-  console.log(recipeDisplayed)
   const currentRecipe = new Recipe(recipeDisplayed, ingredients);
   const itemsToRemove = pantry.findItemsToRemove(currentRecipe);
-  postData(itemsToRemove);
+  console.log(itemsToRemove)
+  console.log(user.pantry)
+  Promise.all(itemsToRemove.map(item => postData(item)))
+    .then(response => {
+      return Promise.all(response.map(res => res.json()))
+    })
+    .then(data => console.log(data))
+    .catch(err => console.log(err))
 }
 
 window.onload = onStartup();
