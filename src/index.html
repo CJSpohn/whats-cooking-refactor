@@ -30,12 +30,17 @@
     <main>
       <section role="search">
         <form class="search-bar">
+          <figure class="search-icon">
+            <img class="search-image" src="https://image.flaticon.com/icons/svg/660/660029.svg">
+          </figure>
           <label for="search-input" class="hidden">Search for a recipe here:</label>
           <input type="search" name="search-input" class="search-input" id="search-input" placeholder="Search recipes by name or ingredients">
         </form>
       </section>
       <section role="main">
-        <button class="cook-recipe hidden">Cook This Recipe</button>
+        <div class="cook-button-container">
+          <button class="cook-recipe hidden">Cook This Recipe</button>
+        </div>        
         <section role="alert" class="success-message hidden"></section>
         <section class="ingredients-list"></section>
         <section class="recipe-area"></section>
