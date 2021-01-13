@@ -14,10 +14,9 @@ class Recipe {
     this.ingredients.forEach(ingredient => {
       this.ingredientsData.find(specificIngredient => {
         if (specificIngredient.id === ingredient.id) {
-          costCounter += (Number(specificIngredient.estimatedCostInCents) *
-          Number(ingredient.quantity.amount));
+          costCounter += +(specificIngredient.estimatedCostInCents *
+          ingredient.quantity.amount).toFixed(1);
           ingredientsUsed.push(specificIngredient.name)
-          // investigate Number() further
         }
       })
     });
