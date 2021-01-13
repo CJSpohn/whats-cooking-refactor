@@ -209,11 +209,11 @@ let domUpdates = {
     cookButton.classList.add('hidden');
   },
 
-  showSuccessMessage() {
+  showSuccessMessage(message) {
     const successMessage = document.querySelector('.success-message');
     successMessage.classList.remove('hidden');
-    successMessage.innerHTML += `
-    <p class="success-text">Your pantry has been updated!</p>
+    successMessage.innerHTML = `
+    <p class="success-text">${message}</p>
     `
   },
 

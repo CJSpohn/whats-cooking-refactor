@@ -34,7 +34,8 @@ const updateUserPantry = (currentUserId, allUsers) => {
 const updateUserData = () => {
   fetch('http://localhost:3001/api/v1/users')
   .then(res => res.json())
-  .then(data => updateUserPantry(user.id, data));
+  .then(data => updateUserPantry(user.id, data))
+  .catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
 }
 
 
@@ -53,7 +54,7 @@ const getData = () => {
       ingredients = dataset[2];
       domUpdates.greetUser(user);
       domUpdates.drawCards(cookbook.recipes, cardArea, user);
-    });
+    }).catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
 }
 
 const postData = (ingredientToRemove) => {
@@ -85,12 +86,11 @@ const updatePantry = () => {
       return Promise.all(response.map(res => res.json()))
     })
     .then(data => {
-      domUpdates.showSuccessMessage()
+      domUpdates.showSuccessMessage('Your pantry has been updated!')
       updateUserData();
     })
-    .catch(err => console.log(err))
+    .catch(err => domUpdates.showSuccessMessage('You don\'t have enough ingredients!'))
   domUpdates.hideCookButton();
-
 }
 
 window.onload = onStartup();
