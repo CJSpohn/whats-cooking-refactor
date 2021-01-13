@@ -29,13 +29,15 @@
     </header>
     <main>
       <form class="search-bar">
-        <figure class="search-icon nav-button">
+        <figure class="search-icon">
           <img class="search-image" src="https://image.flaticon.com/icons/svg/660/660029.svg">
         </figure>
         <label for="search-input" class="hidden">Type search query here</label>
         <input id="search-input" class="search-input" type="text" placeholder="Search recipes by name or ingredients" value="">
       </form>
-      <button class="cook-recipe hidden">Cook This Recipe</button>
+      <div class="cook-button-container">
+        <button class="cook-recipe hidden">Cook This Recipe</button>
+      </div>
       <section class="success-message hidden"></section>
       <section class="ingredients-list">
       </section>
