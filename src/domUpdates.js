@@ -9,16 +9,6 @@ let domUpdates = {
   },
 
   //NAV BUTTONS
-  goToHome(cardArea, cookbook, user) {
-    this.hideChefLogos();
-    this.hideSuccessMessage();
-    document.querySelector('.home-cl').classList.remove('hidden');
-    document.querySelector('.error-message').innerText = '';
-    this.drawCards(cookbook.recipes, cardArea, user);
-    this.hideRecipeDetails();
-    this.hideCookButton();
-  },
-
   changePage(event, user, dataset, cardArea, pantry, ingredients) {
     this.hideRecipeDetails();
     this.hideSuccessMessage();

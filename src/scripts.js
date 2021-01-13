@@ -93,10 +93,18 @@ const updatePantry = () => {
   domUpdates.hideCookButton();
 }
 
+const goToHome = () => {
+  domUpdates.hideChefLogos();
+  domUpdates.hideSuccessMessage();
+  document.querySelector('.home-cl').classList.remove('hidden');
+  document.querySelector('.error-message').innerText = '';
+  domUpdates.drawCards(cookbook.recipes, cardArea, user);
+  domUpdates.hideRecipeDetails();
+  domUpdates.hideCookButton();
+}
+
 window.onload = onStartup();
-homeButton.addEventListener('click', () => {
-  domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
-});
+homeButton.addEventListener('click', goToHome);
 favButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, user.favoriteRecipes, cardArea, pantry, ingredients)
 });
