@@ -8,45 +8,46 @@
   <body>
     <header class="main-header">
       <h1>What's Cookin'</h1>
-      <p class="user-info">Welcome, <span class="user-name">User</span>.</p>
-      <div class="button-wrapper">
+      <h2 class="user-info">Welcome, <span class="user-name">User</span>.</h2>
+      <nav class="button-wrapper">
         <div class="button-container">
-          <button id="home-button" class="home nav-button">
+          <button class="home nav-button">
             <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="home-cl chef-logo">Home
           </button>
-          <button id="view-favorites-button" class="view-favorites nav-button">
+          <button class="view-favorites nav-button">
             <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="fav-cl chef-logo hidden">Favorites
           </button>
-          <button id="view-cookbook-button" class="view-cookbook nav-button">
+          <button class="view-cookbook nav-button">
             <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="cook-cl chef-logo hidden">Cookbook
           </button>
-          <button id="view-pantry-button" class="view-pantry nav-button">
+          <button class="view-pantry nav-button">
             <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="pantry-cl chef-logo hidden">Pantry
           </button>
         </div>
         <p class="error-message"></p>
-      </div>
+      </nav>
     </header>
     <main>
-      <form class="search-bar">
-        <figure class="search-icon">
-          <img class="search-image" src="https://image.flaticon.com/icons/svg/660/660029.svg">
-        </figure>
-        <label for="search-input" class="hidden">Type search query here</label>
-        <input id="search-input" class="search-input" type="text" placeholder="Search recipes by name or ingredients" value="">
-      </form>
-      <div class="cook-button-container">
-        <button class="cook-recipe hidden">Cook This Recipe</button>
-      </div>
-      <section class="success-message hidden"></section>
-      <section class="ingredients-list">
+      <section role="search">
+        <form class="search-bar">
+          <figure class="search-icon">
+            <img class="search-image" src="https://image.flaticon.com/icons/svg/660/660029.svg">
+          </figure>
+          <label for="search-input" class="hidden">Search for a recipe here:</label>
+          <input type="search" name="search-input" class="search-input" id="search-input" placeholder="Search recipes by name or ingredients">
+        </form>
       </section>
-      <section class="recipe-area">
+      <section role="main">
+        <div class="cook-button-container">
+          <button class="cook-recipe hidden">Cook This Recipe</button>
+        </div>        
+        <section role="alert" class="success-message hidden"></section>
+        <section class="ingredients-list"></section>
+        <section class="recipe-area"></section>
+          <div class="card-section-wrapper">
+            <section class="all-cards"></section>
+          </div>
       </section>
-      <div class="card-section-wrapper">
-        <section class="all-cards">
-        </section>
-      </div>
     </main>
   </body>
 </html>
