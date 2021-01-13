@@ -5,8 +5,6 @@ class Pantry {
 
   checkPantryForIngredients(recipe) {
     let ingredientsNeeded = [];
-    console.log(recipe.ingredients)
-    console.log(this.contents)
     recipe.ingredients.forEach(recipeIngredient => {
       let pantryIngredient = this.contents.find(pantryIngredient => pantryIngredient.ingredient === recipeIngredient.id)
       if (pantryIngredient) {
@@ -27,7 +25,6 @@ class Pantry {
         })
       }
     })
-    console.log(ingredientsNeeded)
     return ingredientsNeeded;
   }
 
