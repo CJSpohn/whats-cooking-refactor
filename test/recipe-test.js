@@ -23,7 +23,7 @@ describe('Recipe', () => {
     })
   })
 
-  it.only('should be able to calculate the cost of its ingredients', () => {
+  it('should be able to calculate the cost of its ingredients', () => {
     expect(recipe.calculateCostAndIngredients()).to.eql({
       costCounter: 10122.6,
       ingredientsUsed: [
