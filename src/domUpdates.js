@@ -16,11 +16,13 @@ let domUpdates = {
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
     this.hideRecipeDetails();
+    this.hideCookButton();
   },
 
   changePage(event, user, dataset, cardArea, pantry, ingredients) {
     this.hideRecipeDetails();
     this.hideSuccessMessage();
+    this.hideCookButton()
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
