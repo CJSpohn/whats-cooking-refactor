@@ -1,110 +1,90 @@
-<<<<<<< HEAD
-# Webpack Starter Kit
+# What's Cooking Refactor
 
-## Clone This Repo
+The requirements for this project can be found in [this project spec](https://frontend.turing.io/projects/module-2/refactor-tractor-wc.html)
 
-That's right, _clone_ not fork. You will use this repo multiple times, but you can only fork a repository once. So here is what you need to do to clone the repo and still be able to push changes to your repo:
+## Overview
 
-1. Clone down this repo. Since you don't want to name your project "webpack-starter-kit", you can use an optional argument when you run `git clone` (you replace the `[...]` with the terminal command arguments): `git clone [remote-address] [what you want to name the repo]`
-1. Remove the default remote: `git remote rm origin` (notice that `git remote -v` not gives you back nothing)
-1. Create a new repo on GitHub with the name of `[what you want to name the repo]` to be consistent with naming
-1. Copy the address that you would use to clone down this repo - something like `git@github.com:...`
-1. Add this remote to your cloned down repo: `git remote add origin [address you copied in the previous step]` - do not include the brackets
+Our What's Cooking refactor project is an application that serves as a recipe website where a user can track their pantry, favorite recipes, and add recipes to their 'cookbook.' This was the group project for Mod 2 at the Turing School of Software and Design and took place over the course of nine days. The purpose of this project was to learn new technologies while building off of a standalone project to refactor and add misisng functionality. We were tasked with implementing several new tools to spruce up the pre-existing What's Cooking repository that we were assigned. 
 
-Now try to commit something and push it up to your new repo. If everything is setup correctly, you should see the changes on GitHub.
+In order to run this project you must first clone and down and set up [this](https://github.com/turingschool-examples/whats-cookin-starter-kit) repository as it is the API used in the project to respond to our fetch requests. 
 
-## Setup
+To run our project on your local machine you must follow the set-up instructions in the above repository. Then clone down this repository, run `npm install` and `npm start`. 
 
-After one person has gone through the steps of cloning down this repo and editing the remote, everyone should clone down the repo. 
+## Learning Goals
 
-Then install the library dependencies. Run:
+__Test Driven Development__
 
-```bash
-npm install
-```
+* The provided testing suite was sparse. The few pre-existing test that existed did not pass if they had tests set up at all. 
+* The project currently has unit testing for each class and every method that exists inside of those classes.
 
-To verify that it is setup correctly, run `npm start` in your terminal. Go to `http://localhost:8080/` and you should see a page with some `h1` text and a pink background. If that's the case, you're good to go. Enter `control + c` in your terminal to stop the server at any time.
+__Utilizing New Technologies__
 
-## Where to Add Your Code
+*Webpack*
 
-### JavaScript
+* This was our first exposure to webpack. The webpack was created for us. We simply needed to incorporate the new tools.
 
-You have to be very intentional with where you add your feature code. This repo uses a tool called [webpack](https://webpack.js.org/) to combine many JavaScript files into one big file. Webpack enables you to have many, separate JavaScript files to keep your code organized and readable. Webpack expects all of your code files to be in a specific place, or else it doesn't know how to combine them all behind the scenes.
+*SASS*
 
-**Create all of your feature code files in the `src` directory.**
+* We were tasked with refactoring the CSS by utilizing SASS. 
+*We implemented color functions, extensions, mixins, and variables to help DRY up our CSS.
+* Reset was used to ensure the application looks the same across browsers that don't support our additional functionality. 
 
-Since code is separated into multiple files, you need to use the `import` and `export` syntax to share code across file.
+*Async JavaScript*
 
-Here is a video that walks through some information about [import and export](https://www.youtube.com/watch?v=_3oSWwapPKQ). There are a lot of resources out there about `import` and `export`, and resources will sometimes call them `ES6 modules`. It's something you will see in React and beyond.
+* The biggest change of the project was removing the local data files and pulling data in from the API (linked above) using the fetch API. Additionally, we were specifically asked to use promises and `.then()` as opposed to `async/await`.
+* All user data is fetched on page load using a GET request and `promise.all()`. Classes are instantiated as needed once the data is receieved.
+* A user who has enough ingredients to 'cook' a recipe is handled with a POST request.
+* `Promise.all()` is incorporated for our posts in two instances because we send an array of requests that returns an array of promises.
+* All requests have error handling through `catch` that updates an error message to the DOM. However, the code was constructed so that the user should never see these messages unless error occurs on page load, as they are not able to 'cook' a recipe that they don't have enough ingredients to make. 
 
-### HTML
+__Refactoring__
 
-Add the HTML you need in the `index.html` file in the `./src` directory. There is some boilerplate HTML that exists from the start that you can modify.
+* The majority of the work done in this project was refactoring to follow SRP, be more DRY, and separate DOM manipulation from JavaScript logic.
+* All DOM updates occur in domUpdates.js
+* The conditional checks and logic occur in scripts.js
+* Classes in the data model were utilized to perform certain functions that manipulated the data client-side, such as filtering recipes by name or verifying if a user's pantry had enough ingredients to cook a recipe.
+* The site was not responsive so we added media queries for several screen sizes. 
+* Little to no accessibility accomodations were made in the original project. HTML was refactored to be more semantic, and ARIA labels were added where appropriate. Our goal was to score >90% in LightHouse.
 
-### CSS (SCSS/SASS)
+__Jumping into a codebase__
 
-This project is setup to use SCSS/SASS files by default instead of your regular CSS files. Add your SCSS files in the `src/css` directory. There is a `base.scss` file already there, but you can change this file and add multiple SCSS files in this directory.
+* This was our first real experience taking a pre-existing codebase and working on it to refactor, clean-up, and add missing functionality. 
 
-This might sound weird, but you need to `import` your SCSS files in the JavaScript entry file (`index.js`) for the styles to be applied to your HTML. The example `base.scss` file has already been imported in the JavaScript entry file as an example.
+## Using the Site
 
-### Images
+On page load, a random user is chosen from the user data fetched from the API. They are greeted with a welcome message and shown all the available recipes.
 
-Add your image files in the `src/images` directory. Similar to CSS files, you need to `import` image files in the JavaScript entry file (`index.js`). Then go into the HTML and add an `img` element with the `src` attribute pointing to the `images` directory. There is an example in the `index.html` file for you to see.
+Atop the recipe cards, a user can click the star button to favorite a recipe. Or the plus button to add it to their cookbook. 
 
-## How to View Your Code in Action
+If a user navigates to their favorites or their cookbook and there are no items they are alerted that the respective page is empty and are kept on home. 
 
-In the terminal, run:
+The user's pantry displays all of the ingredients in the user's data. 
 
-```bash
-npm start
-```
+The search bar filters on a `keyup` event and will only display cards relevant to the page the user is on. If on home, it filters all recipes, if in Favorites or Cookbook it will only filter the recipes that are in the user's favorites or cookbook. 
 
-You will see a bunch of lines output to your terminal. One of those lines will be something like:
+If a user clicks on a recipe they are alerted as to what ingredients they are missing in order to make that recipe. Additionally, they see a list of ingredients, instructions, and the total cost as calculated from the API data for the cost of each ingredient and the amount required in the recipe. 
 
-```bash
-Project is running at http://localhost:8080/
-```
+If the user has enough ingredients to cook a recipe a button appears allowing them to confirm that they will be cooking that recipe. Ingredients are then removed from the user's pantry. A POST request is made to the API for each ingredient removed and the user's updated pantry is fetched using a GET request. 
 
-Go to `http://localhost:8080/` in your browser to view your code running in the browser.
+## Wins
 
----
+This was our first time modifying a pre-existing codebase and we learned A TON from this project. This was also our first exposure to SASS, webpack, and the fetch API. Overall, the project went well. We were able to experiment with assigning independent tasks utilizing our project board and GitHub Issues. The time constraint was tough and several 10+ hour days were required to achieve our desired functionality. 
 
-## Test Files Organization
+## Future Iterations
 
-Similar to feature code, your test code needs to be put in a specific place for it to run successfully.
+In future iterations we would love to implement a way for users to add ingredients to their pantry. Such as a 'Go Shopping' button where they can record the number of ingredients to add to their pantry. The overall styling wasn't changed *too* much from the original comp due to the time we had, so it would be nice to turn this project into something more visually appealing. 
 
-**Put all of your test files in the `test` directory.** As a convention, all test filenames should end with `-test.js`. For instance: `box-test.js`.
+## References and Technologies
 
-## Running Your Tests
+The project was written in HTML, SASS, and JavaScript and bundled through webpack.
 
-Run your test suite using the command:
+Unit testing was accomplished through node.js using Mocha and Chai.
 
-```bash
-npm test
-```
+## Authors
 
-The test results will output to the terminal.
+[Connie Hong](https://github.com/conconartist)
 
----
+[Christina Cook](https://github.com/christina-cook)
 
-## Linting Your Code
+[Chris Spohn](https://github.com/CJSpohn)
 
-Run the command in your terminal `npm run lint` to run the linter on your JavaScript code. There will be errors and warnings right from the start in this starter kit - the linter is still running successfully.
-
-Your linter will look at the JavaScript files you have within the `src` directory and the `test` directory. 
-
-## Webpack?
-
-If you look in the `package.json` file, you'll see one of the library dependencies called `webpack`. If you're interested in learning more about what Webpack is and how it works behind the scenes, take a look through the [Webpack configuration documentation](https://webpack.js.org/concepts/).
-
-## Deploying to GitHub Pages
-
-_If you are finished with the functionality and testing of your project_, then you can consider deploying your project to the web! This way anyone can play it without cloning down your repo.
-
-[GitHub Pages](https://pages.github.com/) is a great way to deploy your project to the web. Don't worry about this until your project is free of bugs and well tested!
-
-If you _are_ done, you can follow [this procedure](./gh-pages-procedure.md) to get your project live on GitHub Pages.
-=======
-# whats-cooking-refactor
-Refactor Tractor for Mod 2
->>>>>>> d2a980a2eb4ab7e9826e323e604821530582fbeb
