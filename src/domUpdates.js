@@ -9,20 +9,6 @@ let domUpdates = {
   },
 
   //NAV BUTTONS
-  changePage(event, user, dataset, cardArea, pantry, ingredients) {
-    this.hideRecipeDetails();
-    this.hideSuccessMessage();
-    this.hideCookButton()
-    const classList = event.target.classList
-    const errorMessage = document.querySelector('.error-message');
-    const { error, selector } = this.determinePage(classList);
-    if (!dataset.length) {
-      return errorMessage.innerText = error
-    } else {
-      this.displayPage(user, dataset, cardArea, selector, pantry, ingredients)
-    }
-  },
-
   determinePage(classList) {
     let error, selector;
     if (classList.contains('view-favorites')) {
@@ -36,18 +22,6 @@ let domUpdates = {
       selector = '.pantry-cl';
     }
     return { error, selector }
-  },
-
-  displayPage(user, dataset, cardArea, selector, pantry, ingredients) {
-    this.hideChefLogos();
-    document.querySelector(selector).classList.remove('hidden');
-    cardArea.innerHTML = '';
-    if (selector === '.pantry-cl') {
-      let itemsInPantry = pantry.getPantry(ingredients);
-      this.displayPantry(itemsInPantry);
-    } else {
-      this.drawCards(dataset, cardArea, user);
-    }
   },
 
   displayPantry(itemsInPantry) {
