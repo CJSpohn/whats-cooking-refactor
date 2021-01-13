@@ -14,16 +14,18 @@ let domUpdates = {
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
+    this.hideRecipeDetails();
   },
 
-  changePage(event, user, dataset, cardArea) {
+  changePage(event, user, dataset, cardArea, pantry, ingredients) {
+    this.hideRecipeDetails();
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
     if (!dataset.length) {
       return errorMessage.innerText = error
     } else {
-      this.displayPage(user, dataset, cardArea, selector)
+      this.displayPage(user, dataset, cardArea, selector, pantry, ingredients)
     }
   },
 
@@ -35,15 +37,41 @@ let domUpdates = {
     } else if (classList.contains('view-cookbook')) {
       error = 'Your cookbook is empty!';
       selector = '.cook-cl';
+    } else if (classList.contains('view-pantry')) {
+      error = '';
+      selector = '.pantry-cl';
     }
     return { error, selector }
   },
 
-  displayPage(user, dataset, cardArea, selector) {
+  displayPage(user, dataset, cardArea, selector, pantry, ingredients) {
     this.hideChefLogos();
     document.querySelector(selector).classList.remove('hidden');
     cardArea.innerHTML = '';
-    this.drawCards(dataset, cardArea, user)
+    if (selector === '.pantry-cl') {
+      let itemsInPantry = pantry.getPantry(ingredients);
+      this.displayPantry(itemsInPantry);
+    } else {
+      this.drawCards(dataset, cardArea, user);
+    }
+  },
+
+  displayPantry(itemsInPantry) {
+    let pantryDisplay = document.querySelector('.ingredients-list');
+    pantryDisplay.innerHTML += `
+      <h2 class="recipe-heading">Items in Pantry</h2>`
+    itemsInPantry.forEach(item => {
+      pantryDisplay.innerHTML += `
+          <p class="pantry-list">${item.name}: ${item.amount}</p>
+        `
+    })
+  },
+
+  hideRecipeDetails() {
+    let missingIngredientsSection = document.querySelector('.ingredients-list');
+    let recipeArea = document.querySelector('.recipe-area');
+    missingIngredientsSection.innerHTML = '';
+    recipeArea.innerHTML = '';
   },
 
   hideChefLogos() {
@@ -89,11 +117,11 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients) {
+  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry, currentRecipe) {
     if (event.target.classList.contains('favorite')) {
       this.updateButtonStatus(user, cardArea, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event, cookbook, ingredients, cardArea);
+      this.displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe);
     } else if (event.target.classList.contains('add-button')) {
       this.updateButtonStatus(user, cardArea, cookbook, event)
     }
@@ -142,9 +170,9 @@ let domUpdates = {
   },
 
   //RECIPE INFORMATION
-  displayDirections(event, cookbook, ingredients, cardArea) {
+  displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
-    let currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
     let costInDollars = (cost / 100).toFixed(2);
@@ -152,40 +180,59 @@ let domUpdates = {
     this.showRecipeInformation(cardArea, currentRecipe, costInDollars);
     this.populateIngredients(currentRecipe, ingredientsUsed);
     this.populateInstructions(currentRecipe);
+    let missingIngredients = pantry.checkPantryForIngredients(currentRecipe);
+    if (!missingIngredients.length) {
+      this.revealCookButton();
+    } else {
+      this.displayMissingIngredients(missingIngredients);
+    }
+  },
+
+  displayMissingIngredients(missingIngredients) {
+    let missingIngredientsSection = document.querySelector('.ingredients-list');
+    missingIngredients.forEach(ingredient => {
+      missingIngredientsSection.innerHTML += `
+        <p class="all-recipe-info">You will need ${ingredient.amount} ${ingredient.unit} of ${ingredient.ingredient}</p>
+        `;
+    })
+  },
+
+  revealCookButton() {
+    let cookButton = document.querySelector('.cook-recipe');
+    cookButton.classList.remove('hidden');
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
-    cardArea.innerHTML = `
-    <div class="recipe-container">
-    <h2 class="recipe-heading">${currentRecipe.name}</h2>
+    let recipeArea = document.querySelector('.recipe-area')
+    recipeArea.innerHTML += `
+      <h2 class="recipe-heading">${currentRecipe.name}</h2>
       <section class="all-recipe-info">
-        <p class="cost recipe-info">It will cost: $${costInDollars}</p>
-        <p class="ingredients recipe-info">You will need:</p> 
+        <p class="cost recipe-info">This recipe will cost: $${costInDollars}</p>
+        <p id="${currentRecipe.id}" class="ingredients recipe-info">You will need:</p>
+        <ul class="ingredients-list"></ul>
         <p class="instructions recipe-info">Instructions:<p>
-        <ol></ol>
+        <ol class="instructions-list"></ol>
       </section>
-    </div>
-    `;
+      `;
+    cardArea.innerHTML = '';
   },
 
   populateIngredients(currentRecipe, ingredientsUsed) {
     let ingredientsDisplay = document.querySelector('.ingredients');
     currentRecipe.ingredients.forEach((ingredient, index) => {
-      ingredientsDisplay.insertAdjacentHTML('afterbegin', `
-      <ul>
+      ingredientsDisplay.innerHTML += `
         <li>${ingredient.quantity.amount.toFixed(2)} ${ingredient.quantity.unit}
         ${ingredientsUsed[index]}</li>
-      </ul>
-      `)
+      `
     })
   },
 
   populateInstructions(currentRecipe) {
-    let ingredientsInstructions = document.querySelector('.instructions');
+    let ingredientsInstructions = document.querySelector('.instructions-list');
     currentRecipe.instructions.forEach(instruction => {
-      ingredientsInstructions.insertAdjacentHTML('beforebegin', `
+      ingredientsInstructions.innerHTML += `
       <li>${instruction.instruction}</li>
-      `)
+      `
     })
   },
 

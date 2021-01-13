@@ -10,9 +10,11 @@ import Cookbook from './cookbook';
 
 const favButton = document.querySelector('.view-favorites');
 const cookbookButton = document.querySelector('.view-cookbook');
+const pantryButton = document.querySelector('.view-pantry');
 const homeButton = document.querySelector('.home')
 const cardArea = document.querySelector('.all-cards');
 const searchInput = document.querySelector('.search-input');
+const cookButton = document.querySelector('.cook-recipe');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -42,24 +44,57 @@ const getData = () => {
     });
 }
 
+const postData = (ingredientsToRemove) => {
+  let ingredientPromises = [];
+  let body = {
+    userID: +`${user.id}`,
+    ingredientID: +`${ingredientsToRemove[0].id}`,
+    ingredientModification: -`${ingredientsToRemove[0].amount}`
+  };
+  console.log(body)
+  // ingredientsToRemove.forEach(ingredient => {
+
+    ingredientPromises.push(fetch('http://localhost:3001/api/v1/users', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    }).then(res => res.text()).then(data => console.log(data)).catch(error => console.log(error)))
+
+  // })
+}
+
 const onStartup = () => {
   getData();
 }
 
+const updatePantry = () => {
+  let recipeId = document.querySelector('.ingredients').id;
+  let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
+  console.log(recipeDisplayed)
+  const currentRecipe = new Recipe(recipeDisplayed, ingredients);
+  const itemsToRemove = pantry.findItemsToRemove(currentRecipe);
+  postData(itemsToRemove);
+}
 
 window.onload = onStartup();
 homeButton.addEventListener('click', () => {
   domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
 });
 favButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea)
+  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea, pantry, ingredients)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, favButton, cookbook, event, ingredients)
+  domUpdates.cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.recipesToCook, cardArea);
-})
+  domUpdates.changePage(event, user, user.recipesToCook, cardArea, pantry, ingredients);
+});
 searchInput.addEventListener('keyup', () => {
   domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
-})
+});
+pantryButton.addEventListener('click', () => {
+  domUpdates.changePage(event, user, pantry.contents, cardArea, pantry, ingredients)
+});
+cookButton.addEventListener('click', () => {
+  updatePantry()
+});
