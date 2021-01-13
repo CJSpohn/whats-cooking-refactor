@@ -88,10 +88,10 @@ let domUpdates = {
     allCards.forEach(card => {
       if (favoriteIds.includes(+card.id)) {
         document.querySelector(`.favorite${card.id}`).classList.add('favorite-active');
-      };
+      }
       if (cookbookIds.includes(+card.id)) {
         document.querySelector(`.cookbook${card.id}`).classList.add('cookbook-active');
-      };
+      }
     });
   },
 

@@ -33,9 +33,9 @@ const updateUserPantry = (currentUserId, allUsers) => {
 
 const updateUserData = () => {
   fetch('http://localhost:3001/api/v1/users')
-  .then(res => res.json())
-  .then(data => updateUserPantry(user.id, data))
-  .catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
+    .then(res => res.json())
+    .then(data => updateUserPantry(user.id, data))
+    .catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
 }
 
 
@@ -54,7 +54,8 @@ const getData = () => {
       ingredients = dataset[2];
       domUpdates.greetUser(user);
       domUpdates.drawCards(cookbook.recipes, cardArea, user);
-    }).catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
+    })
+    .catch(err => domUpdates.showSuccessMessage('Oops! Something went wrong'));
 }
 
 const postData = (ingredientToRemove) => {
@@ -63,12 +64,10 @@ const postData = (ingredientToRemove) => {
     ingredientID: +`${ingredientToRemove.id}`,
     ingredientModification: -`${ingredientToRemove.amount}`
   };
-  return fetch('http://localhost:3001/api/v1/users',
-    {
+  return fetch('http://localhost:3001/api/v1/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-    }
+    body: JSON.stringify(body) }
   )
 }
 
