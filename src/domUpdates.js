@@ -117,11 +117,11 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry) {
+  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry, currentRecipe) {
     if (event.target.classList.contains('favorite')) {
       this.updateButtonStatus(user, cardArea, cookbook, event);
     } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event, cookbook, ingredients, cardArea, pantry);
+      this.displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe);
     } else if (event.target.classList.contains('add-button')) {
       this.updateButtonStatus(user, cardArea, cookbook, event)
     }
@@ -170,9 +170,9 @@ let domUpdates = {
   },
 
   //RECIPE INFORMATION
-  displayDirections(event, cookbook, ingredients, cardArea, pantry) {
+  displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
-    let currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
     let costInDollars = (cost / 100).toFixed(2);
@@ -182,7 +182,7 @@ let domUpdates = {
     this.populateInstructions(currentRecipe);
     let missingIngredients = pantry.checkPantryForIngredients(currentRecipe);
     if (!missingIngredients.length) {
-      this.notifyUserRecipeListFulfilled();
+      this.revealCookButton();
     } else {
       this.displayMissingIngredients(missingIngredients);
     }
@@ -197,11 +197,9 @@ let domUpdates = {
     })
   },
 
-  notifyUserRecipeListFulfilled() {
-    let missingIngredientsSection = document.querySelector('.ingredients-list');
-    missingIngredientsSection.innerHTML += `
-        <p class="all-recipe-info">You have enough ingredients to make this recipe!</p>
-        `;
+  revealCookButton() {
+    let cookButton = document.querySelector('.cook-recipe');
+    cookButton.classList.remove('hidden');
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
@@ -210,7 +208,7 @@ let domUpdates = {
       <h2 class="recipe-heading">${currentRecipe.name}</h2>
       <section class="all-recipe-info">
         <p class="cost recipe-info">This recipe will cost: $${costInDollars}</p>
-        <p class="ingredients recipe-info">You will need:</p>
+        <p id="${currentRecipe.id}" class="ingredients recipe-info">You will need:</p>
         <ul class="ingredients-list"></ul>
         <p class="instructions recipe-info">Instructions:<p>
         <ol class="instructions-list"></ol>

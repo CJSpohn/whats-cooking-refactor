@@ -14,6 +14,7 @@ const pantryButton = document.querySelector('.view-pantry');
 const homeButton = document.querySelector('.home')
 const cardArea = document.querySelector('.all-cards');
 const searchInput = document.querySelector('.search-input');
+const cookButton = document.querySelector('.cook-recipe');
 let user, pantry, cookbook, ingredients;
 
 const instantiateUser = (usersData) => {
@@ -47,6 +48,13 @@ const onStartup = () => {
   getData();
 }
 
+const updatePantry = () => {
+  let recipeId = document.querySelector('.ingredients').id;
+  let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
+  console.log(recipeDisplayed)
+  const currentRecipe = new Recipe(recipeDisplayed, ingredients);
+  pantry.findItemsToRemove(currentRecipe);
+}
 
 window.onload = onStartup();
 homeButton.addEventListener('click', () => {
@@ -66,4 +74,7 @@ searchInput.addEventListener('keyup', () => {
 });
 pantryButton.addEventListener('click', () => {
   domUpdates.changePage(event, user, pantry.contents, cardArea, pantry, ingredients)
+});
+cookButton.addEventListener('click', () => {
+  updatePantry()
 });

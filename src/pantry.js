@@ -30,6 +30,19 @@ class Pantry {
     })
     return pantryIngredients;
   }
+
+  // method to remove items from the pantry
+  findItemsToRemove(currentRecipe) {
+    let itemsToRemove = currentRecipe.ingredients.map(ingredient => {
+      return {
+        id: ingredient.id,
+        amount: Math.round(ingredient.quantity.amount * 100) / 100
+      }
+    })
+    console.log(itemsToRemove)
+    return itemsToRemove;
+  }
+
 }
 
 export default Pantry;
