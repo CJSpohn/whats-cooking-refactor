@@ -24,7 +24,26 @@ describe('Recipe', () => {
   })
 
   it('should be able to calculate the cost of its ingredients', () => {
-    expect(recipe.calculateCostAndIngredients()).to.equal(4666);
+    expect(recipe.calculateCostAndIngredients()).to.eql({
+      costCounter: 10122.6,
+      ingredientsUsed: [
+        'apple cider vinegar',
+        'baking powder',
+        'brown rice flour',
+        'brown rice syrup',
+        'oil',
+        'egg albumen',
+        'evaporated cane juice',
+        'flax meal',
+        'instant yeast',
+        'unsulfured molasses',
+        'Potato Starch Flour',
+        'salt',
+        'tapioca starch',
+        'Whole Grain Teff Flour',
+        'ice water',
+        'xanthan gum'
+      ]
+    });
   });
 });
-//add cost and ingredients object

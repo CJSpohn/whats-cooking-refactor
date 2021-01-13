@@ -25,7 +25,6 @@ class User {
   }
 
   findRecipes(stringToSearch, recipes, ingredients) {
-    console.log(recipes[0], ingredients[0])
     const matchingRecipes = recipes.filter(recipe => {
       return recipe.name.toLowerCase().includes(stringToSearch.toLowerCase())
         // || recipe.ingredients.forEach(recipeIngredient => {
@@ -33,11 +32,7 @@ class User {
         // })
     })
     return matchingRecipes
-  }
-
-  checkPantry(recipe) {
-    //if ingredients are in user pantry, return "You have the ingredients!"
-    //if pantry ingredients are missing, return missingIngredientsWithPrice
+  
   }
 }
 
