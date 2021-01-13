@@ -68,14 +68,13 @@ const updatePantry = () => {
   let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
   const currentRecipe = new Recipe(recipeDisplayed, ingredients);
   const itemsToRemove = pantry.findItemsToRemove(currentRecipe);
-  console.log(itemsToRemove)
-  console.log(user.pantry)
   Promise.all(itemsToRemove.map(item => postData(item)))
     .then(response => {
       return Promise.all(response.map(res => res.json()))
     })
     .then(data => console.log(data))
     .catch(err => console.log(err))
+  domUpdates.hideCookButton();
 }
 
 window.onload = onStartup();

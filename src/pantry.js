@@ -14,7 +14,8 @@ class Pantry {
           ingredientsNeeded.push({
             ingredient: ingredientName,
             amount: +amountNeeded.toFixed(2),
-            unit: recipeIngredient.quantity.unit})
+            unit: recipeIngredient.quantity.unit
+          })
         }
       } else {
         let ingredientName = recipe.ingredientsData.find(ingredient => ingredient.id === recipeIngredient.id).name;

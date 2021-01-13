@@ -202,6 +202,11 @@ let domUpdates = {
     cookButton.classList.remove('hidden');
   },
 
+  hideCookButton() {
+    let cookButton = document.querySelector('.cook-recipe');
+    cookButton.classList.add('hidden');
+  },
+
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
     let recipeArea = document.querySelector('.recipe-area')
     recipeArea.innerHTML += `
