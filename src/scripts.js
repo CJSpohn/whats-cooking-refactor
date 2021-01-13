@@ -93,25 +93,80 @@ const updatePantry = () => {
   domUpdates.hideCookButton();
 }
 
+const goToHome = () => {
+  domUpdates.hideChefLogos();
+  domUpdates.hideSuccessMessage();
+  domUpdates.revealSearchBar()
+  document.querySelector('.home-cl').classList.remove('hidden');
+  document.querySelector('.error-message').innerText = '';
+  domUpdates.drawCards(cookbook.recipes, cardArea, user);
+  domUpdates.hideRecipeDetails();
+  domUpdates.hideCookButton();
+}
+
+const changePage = (event, dataset) => {
+  domUpdates.hideRecipeDetails();
+  domUpdates.hideSuccessMessage();
+  domUpdates.hideCookButton()
+  const classList = event.target.classList
+  const errorMessage = document.querySelector('.error-message');
+  const { error, selector } = domUpdates.determinePage(classList);
+  if (!dataset.length) {
+    return errorMessage.innerText = error
+  } else {
+    displayPage(dataset, selector)
+  }
+}
+const displayPage = (dataset, selector) => {
+  domUpdates.hideChefLogos();
+  document.querySelector(selector).classList.remove('hidden');
+  cardArea.innerHTML = '';
+  if (selector === '.pantry-cl') {
+    let itemsInPantry = pantry.getPantry(ingredients);
+    domUpdates.displayPantry(itemsInPantry);
+  } else {
+    domUpdates.drawCards(dataset, cardArea, user);
+  }
+}
+
+const cardButtonConditionals = (event) => {
+  if (event.target.classList.contains('favorite')) {
+    domUpdates.updateButtonStatus(user, cardArea, cookbook, event);
+  } else if (event.target.classList.contains('card-picture')) {
+    domUpdates.displayDirections(event, cookbook, ingredients, cardArea, pantry);
+  } else if (event.target.classList.contains('add-button')) {
+    domUpdates.updateButtonStatus(user, cardArea, cookbook, event)
+  }
+}
+
+const searchRecipesByNameOrIngredient = (string) => {
+  let dataset = '';
+  const favChef = document.querySelector('.fav-cl');
+  const cookChef = document.querySelector('.cook-cl');
+  if (!favChef.classList.contains('hidden')) {
+    dataset = 'favoriteRecipes';
+  } else if (!cookChef.classList.contains('hidden')) {
+    dataset = 'recipesToCook';
+  }
+  const matchingRecipes = user.findRecipes(string, cookbook.recipes, dataset);
+  domUpdates.drawCards(matchingRecipes, cardArea, user);
+}
+
 window.onload = onStartup();
-homeButton.addEventListener('click', () => {
-  domUpdates.goToHome(cardArea, cookbook, user, favButton, cookbookButton)
-});
+homeButton.addEventListener('click', goToHome);
 favButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.favoriteRecipes, cardArea, pantry, ingredients)
+  changePage(event, user.favoriteRecipes)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry)
+  cardButtonConditionals(event)
 });
 cookbookButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, user.recipesToCook, cardArea, pantry, ingredients);
+  changePage(event, user.recipesToCook);
 });
 searchInput.addEventListener('keyup', () => {
-  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
+  searchRecipesByNameOrIngredient(searchInput.value);
 });
 pantryButton.addEventListener('click', () => {
-  domUpdates.changePage(event, user, pantry.contents, cardArea, pantry, ingredients)
+  changePage(event, pantry.contents)
 });
-cookButton.addEventListener('click', () => {
-  updatePantry()
-});
+cookButton.addEventListener('click', updatePantry);

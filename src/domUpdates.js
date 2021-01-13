@@ -8,56 +8,31 @@ let domUpdates = {
     userName.innerHTML = name;
   },
 
+  hideSearchBar() {
+    document.querySelector('.search-bar').classList.add('hidden')
+  },
+
+  revealSearchBar() {
+    document.querySelector('.search-bar').classList.remove('hidden')
+  },
+
   //NAV BUTTONS
-  goToHome(cardArea, cookbook, user) {
-    this.hideChefLogos();
-    this.hideSuccessMessage();
-    document.querySelector('.home-cl').classList.remove('hidden');
-    document.querySelector('.error-message').innerText = '';
-    this.drawCards(cookbook.recipes, cardArea, user);
-    this.hideRecipeDetails();
-    this.hideCookButton();
-  },
-
-  changePage(event, user, dataset, cardArea, pantry, ingredients) {
-    this.hideRecipeDetails();
-    this.hideSuccessMessage();
-    this.hideCookButton()
-    const classList = event.target.classList
-    const errorMessage = document.querySelector('.error-message');
-    const { error, selector } = this.determinePage(classList);
-    if (!dataset.length) {
-      return errorMessage.innerText = error
-    } else {
-      this.displayPage(user, dataset, cardArea, selector, pantry, ingredients)
-    }
-  },
-
   determinePage(classList) {
     let error, selector;
     if (classList.contains('view-favorites')) {
+      this.revealSearchBar();
       error = 'You have no favorites!';
       selector = '.fav-cl';
     } else if (classList.contains('view-cookbook')) {
+      this.revealSearchBar();
       error = 'Your cookbook is empty!';
       selector = '.cook-cl';
     } else if (classList.contains('view-pantry')) {
       document.querySelector('.error-message').innerText = '';
+      this.hideSearchBar();
       selector = '.pantry-cl';
     }
     return { error, selector }
-  },
-
-  displayPage(user, dataset, cardArea, selector, pantry, ingredients) {
-    this.hideChefLogos();
-    document.querySelector(selector).classList.remove('hidden');
-    cardArea.innerHTML = '';
-    if (selector === '.pantry-cl') {
-      let itemsInPantry = pantry.getPantry(ingredients);
-      this.displayPantry(itemsInPantry);
-    } else {
-      this.drawCards(dataset, cardArea, user);
-    }
   },
 
   displayPantry(itemsInPantry) {
@@ -121,16 +96,6 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry, currentRecipe) {
-    if (event.target.classList.contains('favorite')) {
-      this.updateButtonStatus(user, cardArea, cookbook, event);
-    } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe);
-    } else if (event.target.classList.contains('add-button')) {
-      this.updateButtonStatus(user, cardArea, cookbook, event)
-    }
-  },
-
   updateButtonStatus(user, cardArea, cookbook, event) {
     const { dataset, selector, active } = this.determineButton(event);
     const specificRecipe = this.getRecipe(cookbook, event);
@@ -174,9 +139,9 @@ let domUpdates = {
   },
 
   //RECIPE INFORMATION
-  displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe) {
+  displayDirections(event, cookbook, ingredients, cardArea, pantry) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
-    currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    let currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
     let costInDollars = (cost / 100).toFixed(2);
@@ -226,6 +191,7 @@ let domUpdates = {
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {
+    this.hideSearchBar();
     let recipeArea = document.querySelector('.recipe-area')
     recipeArea.innerHTML += `
       <h2 class="recipe-heading">${currentRecipe.name}</h2>
@@ -257,12 +223,8 @@ let domUpdates = {
       <li>${instruction.instruction}</li>
       `
     })
-  },
-
-  searchRecipesByNameOrIngredient(user, string, recipes, ingredients, cardArea) {
-    const matchingRecipes = user.findRecipes(string, recipes, ingredients);
-    this.drawCards(matchingRecipes, cardArea, user)
   }
+
 }
 
 export default domUpdates;
