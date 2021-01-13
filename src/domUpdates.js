@@ -11,6 +11,7 @@ let domUpdates = {
   //NAV BUTTONS
   goToHome(cardArea, cookbook, user) {
     this.hideChefLogos();
+    this.hideIngredientChanges();
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
@@ -19,6 +20,7 @@ let domUpdates = {
 
   changePage(event, user, dataset, cardArea, pantry, ingredients) {
     this.hideRecipeDetails();
+    this.hideIngredientChanges();
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
@@ -205,6 +207,20 @@ let domUpdates = {
   hideCookButton() {
     let cookButton = document.querySelector('.cook-recipe');
     cookButton.classList.add('hidden');
+  },
+
+  showIngredientChanges() {
+    const successMessage = document.querySelector('.success-message');
+    successMessage.classList.remove('hidden');
+    successMessage.innerHTML += `
+    <p class="success-text">Your pantry has been updated!</p>
+    `
+  },
+
+  hideIngredientChanges() {
+    const successMessage = document.querySelector('.success-message');
+    successMessage.innerHTML = '';
+    successMessage.classList.add('hidden');
   },
 
   showRecipeInformation(cardArea, currentRecipe, costInDollars) {

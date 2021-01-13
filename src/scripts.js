@@ -72,7 +72,7 @@ const updatePantry = () => {
     .then(response => {
       return Promise.all(response.map(res => res.json()))
     })
-    .then(data => console.log(data))
+    .then(data => domUpdates.showIngredientChanges(data))
     .catch(err => console.log(err))
   domUpdates.hideCookButton();
 }
