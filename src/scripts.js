@@ -26,6 +26,18 @@ const instantiateUser = (usersData) => {
   pantry = new Pantry(newUser.pantry);
 }
 
+const updateUserPantry = (currentUserId, allUsers) => {
+  const activeUser = allUsers.find(user => user.id === currentUserId);
+  pantry = new Pantry(activeUser.pantry)
+}
+
+const updateUserData = () => {
+  fetch('http://localhost:3001/api/v1/users')
+  .then(res => res.json())
+  .then(data => updateUserPantry(user.id, data));
+}
+
+
 const getData = () => {
   let usersPromise = fetch('http://localhost:3001/api/v1/users')
     .then(res => res.json());
@@ -72,9 +84,13 @@ const updatePantry = () => {
     .then(response => {
       return Promise.all(response.map(res => res.json()))
     })
-    .then(data => domUpdates.showIngredientChanges(data))
+    .then(data => {
+      domUpdates.showSuccessMessage()
+      updateUserData();
+    })
     .catch(err => console.log(err))
   domUpdates.hideCookButton();
+
 }
 
 window.onload = onStartup();

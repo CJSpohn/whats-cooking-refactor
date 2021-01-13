@@ -11,7 +11,7 @@ let domUpdates = {
   //NAV BUTTONS
   goToHome(cardArea, cookbook, user) {
     this.hideChefLogos();
-    this.hideIngredientChanges();
+    this.hideSuccessMessage();
     document.querySelector('.home-cl').classList.remove('hidden');
     document.querySelector('.error-message').innerText = '';
     this.drawCards(cookbook.recipes, cardArea, user);
@@ -20,7 +20,7 @@ let domUpdates = {
 
   changePage(event, user, dataset, cardArea, pantry, ingredients) {
     this.hideRecipeDetails();
-    this.hideIngredientChanges();
+    this.hideSuccessMessage();
     const classList = event.target.classList
     const errorMessage = document.querySelector('.error-message');
     const { error, selector } = this.determinePage(classList);
@@ -40,7 +40,7 @@ let domUpdates = {
       error = 'Your cookbook is empty!';
       selector = '.cook-cl';
     } else if (classList.contains('view-pantry')) {
-      error = '';
+      document.querySelector('.error-message').innerText = '';
       selector = '.pantry-cl';
     }
     return { error, selector }
@@ -209,7 +209,7 @@ let domUpdates = {
     cookButton.classList.add('hidden');
   },
 
-  showIngredientChanges() {
+  showSuccessMessage() {
     const successMessage = document.querySelector('.success-message');
     successMessage.classList.remove('hidden');
     successMessage.innerHTML += `
@@ -217,7 +217,7 @@ let domUpdates = {
     `
   },
 
-  hideIngredientChanges() {
+  hideSuccessMessage() {
     const successMessage = document.querySelector('.success-message');
     successMessage.innerHTML = '';
     successMessage.classList.add('hidden');
