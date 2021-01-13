@@ -85,16 +85,6 @@ let domUpdates = {
   },
 
   //CARD BUTTONS
-  cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry, currentRecipe) {
-    if (event.target.classList.contains('favorite')) {
-      this.updateButtonStatus(user, cardArea, cookbook, event);
-    } else if (event.target.classList.contains('card-picture')) {
-      this.displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe);
-    } else if (event.target.classList.contains('add-button')) {
-      this.updateButtonStatus(user, cardArea, cookbook, event)
-    }
-  },
-
   updateButtonStatus(user, cardArea, cookbook, event) {
     const { dataset, selector, active } = this.determineButton(event);
     const specificRecipe = this.getRecipe(cookbook, event);
@@ -138,9 +128,9 @@ let domUpdates = {
   },
 
   //RECIPE INFORMATION
-  displayDirections(event, cookbook, ingredients, cardArea, pantry, currentRecipe) {
+  displayDirections(event, cookbook, ingredients, cardArea, pantry) {
     let newRecipeInfo = this.getRecipe(cookbook, event);
-    currentRecipe = new Recipe(newRecipeInfo, ingredients);
+    let currentRecipe = new Recipe(newRecipeInfo, ingredients);
     let recipeInformation = currentRecipe.calculateCostAndIngredients()
     let cost = recipeInformation.costCounter;
     let costInDollars = (cost / 100).toFixed(2);

@@ -128,19 +128,34 @@ const displayPage = (dataset, selector) => {
   }
 }
 
+const cardButtonConditionals = (event) => {
+  if (event.target.classList.contains('favorite')) {
+    domUpdates.updateButtonStatus(user, cardArea, cookbook, event);
+  } else if (event.target.classList.contains('card-picture')) {
+    domUpdates.displayDirections(event, cookbook, ingredients, cardArea, pantry);
+  } else if (event.target.classList.contains('add-button')) {
+    domUpdates.updateButtonStatus(user, cardArea, cookbook, event)
+  }
+}
+
+const searchRecipesByNameOrIngredient = (string) => {
+  const matchingRecipes = user.findRecipes(string, cookbook.recipes, ingredients);
+  domUpdates.drawCards(matchingRecipes, cardArea, user)
+}
+
 window.onload = onStartup();
 homeButton.addEventListener('click', goToHome);
 favButton.addEventListener('click', () => {
   changePage(event, user.favoriteRecipes)
 });
 cardArea.addEventListener('click', (event) => {
-  domUpdates.cardButtonConditionals(user, cardArea, cookbook, event, ingredients, pantry)
+  cardButtonConditionals(event)
 });
 cookbookButton.addEventListener('click', () => {
   changePage(event, user.recipesToCook);
 });
 searchInput.addEventListener('keyup', () => {
-  domUpdates.searchRecipesByNameOrIngredient(user, searchInput.value, cookbook.recipes, ingredients, cardArea);
+  searchRecipesByNameOrIngredient(searchInput.value);
 });
 pantryButton.addEventListener('click', () => {
   changePage(event, pantry.contents)

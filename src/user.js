@@ -32,8 +32,7 @@ class User {
         // })
     })
     return matchingRecipes
-  
   }
 }
 
-module.exports = User;
+export default User;
