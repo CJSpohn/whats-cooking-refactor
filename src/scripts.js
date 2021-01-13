@@ -44,6 +44,25 @@ const getData = () => {
     });
 }
 
+const postData = (ingredientsToRemove) => {
+  let ingredientPromises = [];
+  let body = {
+    userID: +`${user.id}`,
+    ingredientID: +`${ingredientsToRemove[0].id}`,
+    ingredientModification: -`${ingredientsToRemove[0].amount}`
+  };
+  console.log(body)
+  // ingredientsToRemove.forEach(ingredient => {
+
+    ingredientPromises.push(fetch('http://localhost:3001/api/v1/users', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    }).then(res => res.text()).then(data => console.log(data)).catch(error => console.log(error)))
+
+  // })
+}
+
 const onStartup = () => {
   getData();
 }
@@ -53,7 +72,8 @@ const updatePantry = () => {
   let recipeDisplayed = cookbook.recipes.find(recipe => +recipe.id === +recipeId);
   console.log(recipeDisplayed)
   const currentRecipe = new Recipe(recipeDisplayed, ingredients);
-  pantry.findItemsToRemove(currentRecipe);
+  const itemsToRemove = pantry.findItemsToRemove(currentRecipe);
+  postData(itemsToRemove);
 }
 
 window.onload = onStartup();
