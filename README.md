@@ -70,6 +70,9 @@ The user's pantry displays all of the ingredients in the user's data.
 
 The search bar filters on a `keyup` event and will only display cards relevant to the page the user is on. If on home, it filters all recipes, if in Favorites or Cookbook it will only filter the recipes that are in the user's favorites or cookbook. 
 
+![Using the search bar](https://user-images.githubusercontent.com/69563078/104527500-1b010480-55c2-11eb-9171-a08468dde18d.gif)
+
+
 If a user clicks on a recipe they are alerted as to what ingredients they are missing in order to make that recipe. Additionally, they see a list of ingredients, instructions, and the total cost as calculated from the API data for the cost of each ingredient and the amount required in the recipe. 
 
 <img width="391" alt="Screen Shot 2021-01-13 at 4 59 06 PM" src="https://user-images.githubusercontent.com/69563078/104527369-cd849780-55c1-11eb-8a25-f7dbcc99f4c4.png">
