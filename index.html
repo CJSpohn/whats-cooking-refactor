@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Whats Cookin</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <header class="main-header">
+      <h1>What's Cookin'</h1>
+      <h2 class="user-info">Welcome, <span class="user-name">User</span>.</h2>
+      <nav class="button-wrapper">
+        <div class="button-container">
+          <button class="home nav-button">
+            <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="home-cl chef-logo">Home
+          </button>
+          <button class="view-favorites nav-button">
+            <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="fav-cl chef-logo hidden">Favorites
+          </button>
+          <button class="view-cookbook nav-button">
+            <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="cook-cl chef-logo hidden">Cookbook
+          </button>
+          <button class="view-pantry nav-button">
+            <img src="https://user-images.githubusercontent.com/69813722/104355153-7ef2d280-54c7-11eb-87d5-dd668b86ea06.png" alt="A little chef hat" class="pantry-cl chef-logo hidden">Pantry
+          </button>
+        </div>
+        <p class="error-message"></p>
+      </nav>
+    </header>
+    <main>
+      <section role="search">
+        <form class="search-bar">
+          <figure class="search-icon">
+            <img class="search-image" src="https://image.flaticon.com/icons/svg/660/660029.svg" alt="Image of magnifying glass">
+          </figure>
+          <label for="search-input" class="hidden">Search for a recipe here:</label>
+          <input type="search" name="search-input" class="search-input" id="search-input" placeholder="Search recipes by name or ingredients">
+        </form>
+      </section>
+      <section role="main">
+        <div class="cook-button-container">
+          <button class="cook-recipe hidden">Cook This Recipe</button>
+        </div>
+        <section role="alert" class="success-message hidden"></section>
+        <section class="ingredients-list"></section>
+        <section class="recipe-area"></section>
+          <div class="card-section-wrapper">
+            <section class="all-cards"></section>
+          </div>
+      </section>
+    </main>
+  <script src="main.bundle.js"></script></body>
+</html>
