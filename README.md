@@ -54,17 +54,29 @@ __Jumping into a codebase__
 
 On page load, a random user is chosen from the user data fetched from the API. They are greeted with a welcome message and shown all the available recipes.
 
+<img width="1083" alt="Screen Shot 2021-01-13 at 4 56 33 PM" src="https://user-images.githubusercontent.com/69563078/104527022-02441f00-55c1-11eb-96e2-2d7fdf9db54d.png">
+
 Atop the recipe cards, a user can click the star button to favorite a recipe. Or the plus button to add it to their cookbook. 
+
+<img width="538" alt="Screen Shot 2021-01-13 at 4 56 53 PM" src="https://user-images.githubusercontent.com/69563078/104527036-07a16980-55c1-11eb-9296-c5f912604f0a.png">
 
 If a user navigates to their favorites or their cookbook and there are no items they are alerted that the respective page is empty and are kept on home. 
 
+<img width="286" alt="Screen Shot 2021-01-13 at 4 57 16 PM" src="https://user-images.githubusercontent.com/69563078/104527043-08d29680-55c1-11eb-8d7c-e877150d841c.png">
+
 The user's pantry displays all of the ingredients in the user's data. 
+
+<img width="417" alt="Screen Shot 2021-01-13 at 4 57 29 PM" src="https://user-images.githubusercontent.com/69563078/104527337-b6de4080-55c1-11eb-8759-125d993ad74c.png">
 
 The search bar filters on a `keyup` event and will only display cards relevant to the page the user is on. If on home, it filters all recipes, if in Favorites or Cookbook it will only filter the recipes that are in the user's favorites or cookbook. 
 
 If a user clicks on a recipe they are alerted as to what ingredients they are missing in order to make that recipe. Additionally, they see a list of ingredients, instructions, and the total cost as calculated from the API data for the cost of each ingredient and the amount required in the recipe. 
 
+<img width="391" alt="Screen Shot 2021-01-13 at 4 59 06 PM" src="https://user-images.githubusercontent.com/69563078/104527369-cd849780-55c1-11eb-8a25-f7dbcc99f4c4.png">
+
 If the user has enough ingredients to cook a recipe a button appears allowing them to confirm that they will be cooking that recipe. Ingredients are then removed from the user's pantry. A POST request is made to the API for each ingredient removed and the user's updated pantry is fetched using a GET request. 
+
+<img width="299" alt="Screen Shot 2021-01-13 at 5 01 09 PM" src="https://user-images.githubusercontent.com/69563078/104527063-0ec87780-55c1-11eb-93f4-62240cd814bd.png">
 
 ## Wins
 
