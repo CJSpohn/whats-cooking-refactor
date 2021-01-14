@@ -4,9 +4,9 @@ The requirements for this project can be found in [this project spec](https://fr
 
 ## Overview
 
-Our What's Cooking refactor project is an application that serves as a recipe website where a user can track their pantry, favorite recipes, and add recipes to their 'cookbook.' This was the group project for Mod 2 at the Turing School of Software and Design and took place over the course of nine days. The purpose of this project was to learn new technologies while building off of a standalone project to refactor and add misisng functionality. We were tasked with implementing several new tools to spruce up the pre-existing What's Cooking repository that we were assigned. 
+Our What's Cooking refactor project is an application that serves as a recipe website where a user can track their pantry, favorite recipes, and add recipes to their 'cookbook.' This was the group project for Mod 2 at the Turing School of Software and Design and took place over the course of nine days. The purpose of this project was to learn new technologies while building off of a standalone project to refactor and add missing functionality. We were tasked with implementing several new tools to spruce up the pre-existing What's Cooking repository that we were assigned. 
 
-In order to run this project you must first clone and down and set up [this](https://github.com/turingschool-examples/whats-cookin-starter-kit) repository as it is the API used in the project to respond to our fetch requests. 
+In order to run this project you must first clone down and set up [this](https://github.com/turingschool-examples/whats-cookin-starter-kit) repository as it is the API used in the project to respond to our fetch requests. 
 
 To run our project on your local machine you must follow the set-up instructions in the above repository. Then clone down this repository, run `npm install` and `npm start`. 
 
@@ -26,7 +26,7 @@ __Utilizing New Technologies__
 *SASS*
 
 * We were tasked with refactoring the CSS by utilizing SASS. 
-*We implemented color functions, extensions, mixins, and variables to help DRY up our CSS.
+* We implemented color functions, extensions, mixins, and variables to help DRY up our CSS.
 * Reset was used to ensure the application looks the same across browsers that don't support our additional functionality. 
 
 *Async JavaScript*
